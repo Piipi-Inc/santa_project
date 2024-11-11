@@ -49,6 +49,9 @@
     }
     ```
 
+### 1.2.1. Выйти из аккаунта (под ?)
+* POST `/api/logout`
+* Описание: Выход из аккаунта / удаление jwt токена из базы (если имеется)
 
 ### 1.3. Получение информации о текущем пользователе
 
@@ -60,11 +63,14 @@
     ```json
     {
         "data": {
-            "id": "user_id",
+            "id": 1,
             "username": "string",
             "name": "string",
             "preferences": "string",
-            "completed_events": ["storytelling_viewed"]
+            "completed_events": {
+                "storytelling_viewed": true,
+                "gift_sent": false,
+            }
         },
         "error": null
     }
@@ -80,10 +86,8 @@
 * Body:
     ```json
     {
-        "username": "string",
         "name": "string",
-        "preferences": "string",
-        "password": "string"
+        "preferences": "string"
     }
     ```
 
@@ -91,10 +95,8 @@
     ```json
     {
         "data": {
-            "username": "string",
             "name": "string",
             "preferences": "string",
-            "password": "string"
         },
         "error": null
     }
@@ -113,7 +115,8 @@
         "data": [
             {
                 "lobby_code": "<lobby_code>",
-                "lobby_name": "<lobby_name>"
+                "lobby_name": "<lobby_name>",
+                "is_started": false
             }
         ],
         "error": null
@@ -160,12 +163,14 @@
             "lobby_id": "string",
             "lobby_name": "string",
             "participants": [
-                {
+                {   
+                    "id": 1,
                     "username": "string",
-                    "wishlist": "string_url"
+                    "name": "string"
                 }
             ],
-            "status": "waiting/started"
+            "is_started": false,
+            "is_admin": false
         },
         "error": null
     }
@@ -194,6 +199,19 @@
 
 ### 2.4. Настроить вебсокет-соединение
 * WS /api/lobby/{lobby_id}
+?
+* Headers:
+    * Authorization: `Bearer <jwt_token>`
+* Ответ:
+    ```json
+    {  
+        "santa_for_user": {
+            "username": "string",
+            "name": "string",
+            "preferences": "text"
+        }
+    }
+    ```
 
 ### 2.5. Начало игры
 
@@ -204,7 +222,6 @@
 * Ответ:
     ```json
     {
-        "message": "Game started",
         "santa_for_user": {
             "username": "string",
             "wishlist": "string_url"
@@ -231,7 +248,8 @@
 * Ответ:
     ```json
     {
-        "message": "Event marked as complete"
+        "data": null,
+        "error": null
     }
     ```
 
@@ -245,9 +263,12 @@
 * Ответ:
     ```json
     {
-        "completed_events": [
-            "storytelling_viewed",
-            "gift_sent"
-        ]
+        "data": {
+            "completed_events": {
+                "storytelling_viewed": true,
+                "gift_sent": false
+            }
+        },
+        "error": null
     }
     ```
