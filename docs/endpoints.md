@@ -79,7 +79,7 @@
 
 ### 1.4. Изменение информации о пользователе
 
-* PATCH `/api/user/update`
+* PATCH `/api/user`
 * Описание: Изменение данных пользователя (имя, email, пароль).
 * Headers:
     * Authorization: `Bearer <jwt_token>`
@@ -128,7 +128,7 @@
 
 ### 2.1. Создание нового лобби
 
-* POST `/api/lobby/create`
+* POST `/api/lobby`
 * Описание: Создание нового лобби для игры.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
@@ -179,7 +179,7 @@
 
 ### 2.3. Присоединение к лобби
 
-* POST /api/lobby/join
+* POST `/api/lobby/join`
 * Описание: Присоединение к существующему лобби.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
@@ -198,7 +198,7 @@
     ```
 
 ### 2.4. Настроить вебсокет-соединение
-* WS /api/lobby/{lobby_id}
+* WS /api/ws/lobby/{lobby_id} 
 ?
 * Headers:
     * Authorization: `Bearer <jwt_token>`
