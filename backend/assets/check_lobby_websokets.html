@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lobby Test</h1>
+    <div>
+        <label for="lobbyId">Lobby ID:</label>
+        <input type="text" id="lobbyId" placeholder="Enter Lobby ID">
+        <button id="connectBtn">Connect</button>
+    </div>
+
+    <div id="messages">
+        <p><strong>Messages will appear here:</strong></p>
+    </div>
+
+    <div>
+        <button id="startLobbyBtn" disabled>Start Lobby (Admin)</button>
+    </div>
+
+    <script>
+        let websocket;
+        const connectBtn = document.getElementById("connectBtn");
+        const startLobbyBtn = document.getElementById("startLobbyBtn");
+        const messagesDiv = document.getElementById("messages");
+        const lobbyIdInput = document.getElementById("lobbyId");
+
+        connectBtn.addEventListener("click", () => {
+            const lobbyId = lobbyIdInput.value.trim();
+            if (!lobbyId) {
+                alert("Please enter a Lobby ID");
+                return;
+            }
+
+            // Подключение к вебсокету
+            websocket = new WebSocket(`ws://localhost:8000/api/v1/lobby/${lobbyId}/ws`);
+
+            websocket.onopen = () => {
+                logMessage("Connected to the lobby.");
+                startLobbyBtn.disabled = false; // Активируем кнопку старта для администратора
+            };
+
+            websocket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                logMessage(`Server: ${JSON.stringify(data)}`);
+            };
+
+            websocket.onclose = () => {
+                logMessage("Disconnected from the lobby.");
+                startLobbyBtn.disabled = true;
+            };
+
+            websocket.onerror = (error) => {
+                logMessage("Error occurred: " + error.message);
+            };
+        });
+
+        startLobbyBtn.addEventListener("click", async () => {
+            const lobbyId = lobbyIdInput.value.trim();
+            if (!lobbyId) {
+                alert("Please enter a Lobby ID");
+                return;
+            }
+
+            // Отправляем POST-запрос для старта лобби
+            try {
+                const response = await fetch(`http://localhost:8000/api/v1/lobby/${lobbyId}/start`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    logMessage(`Lobby started: ${JSON.stringify(data)}`);
+                } else {
+                    const error = await response.json();
+                    logMessage(`Error starting lobby: ${JSON.stringify(error)}`);
+                }
+            } catch (err) {
+                logMessage(`Error: ${err.message}`);
+            }
+        });
+
+        function logMessage(message) {
+            const p = document.createElement("p");
+            p.textContent = message;
+            messagesDiv.appendChild(p);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
