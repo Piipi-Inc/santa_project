@@ -5,6 +5,7 @@ from src.models.base import Base
 
 class Participant(Base):
     """Participant sqlalchemy object"""
+
     id = Column(UUID, primary_key=True)
     lobby_id = Column(String, ForeignKey("lobby.id"), nullable=False)
     user_id = Column(UUID, ForeignKey("user.id"), nullable=False)

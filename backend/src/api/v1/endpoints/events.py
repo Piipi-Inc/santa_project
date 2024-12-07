@@ -6,15 +6,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.user import User
 from src.models.event import Event
-from src.services.auth import auth_manager
+from src.services.auth_manager_service import auth_manager
 from src.core.database import get_async_session
 from src.schemas.events import SCompleteEvent
 
 
 router = APIRouter()
 
-@router.post('/complete', status_code=status.HTTP_201_CREATED)
-async def complete_event(event_name: SCompleteEvent, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> None:
+
+@router.post("/complete", status_code=status.HTTP_201_CREATED)
+async def complete_event(
+    event_name: SCompleteEvent,
+    current_user: User = Depends(auth_manager.get_current_user),
+    session: AsyncSession = Depends(get_async_session),
+) -> None:
     """
     Complete the specified event for current user
     :param: event_name: the event to complete
@@ -22,9 +27,7 @@ async def complete_event(event_name: SCompleteEvent, current_user: User = Depend
     :param: session: sqlalchemy session
     """
     new_event = Event(
-        id = uuid4(),
-        user_id = current_user.id,
-        event_name = event_name.event_name
+        id=uuid4(), user_id=current_user.id, event_name=event_name.event_name
     )
 
     try:

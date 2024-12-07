@@ -4,123 +4,99 @@
 
 ### 1.1. Регистрация пользователя
 
-* POST `/api/register`
+* POST `/api/v1/register`
 * Описание: Регистрация нового пользователя.
 * Body:
     ```json
     {
-        "username": "string",
-        "name": "string",
-        "preferences": "string",
-        "password": "string"
+    "username": "string",
+    "name": "string",
+    "preferences": "string",
+    "password": "string"
     }
     ```
 
 * Ответ:
     ```json
     {
-        "data": {
-                "token": "jwt_token"
-            },
-        "error": null
+    "token": "string"
     }
     ```
 
 
 ### 1.2. Логин пользователя (JWT токен)
 
-* POST `/api/login`
+* POST `/api/v1/login`
 * Описание: Логин пользователя и получение JWT токена.
 * Body:
     ```json
     {
-        "username": "string",
-        "password": "string"
+    "username": "string",
+    "password": "string"
     }
     ```
 
 * Ответ:
     ```json
     {
-        "data": {
-                "token": "jwt_token"
-            },
-        "error": null
+    "token": "string"
     }
     ```
 
-### 1.2.1. Выйти из аккаунта (под ?)
-* POST `/api/logout`
-* Описание: Выход из аккаунта / удаление jwt токена из базы (если имеется)
+### 1.2.1. Выйти из аккаунта
+* POST `/api/v1/logout`
+* Описание: Выход из аккаунта / удаление jwt-токена из куки
 
 ### 1.3. Получение информации о текущем пользователе
 
-* GET `/api/user`
+* GET `/api/v1/user`
 * Описание: Получение данных авторизованного пользователя по токену.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Ответ:
     ```json
     {
-        "data": {
-            "id": 1,
-            "username": "string",
-            "name": "string",
-            "preferences": "string",
-            "completed_events": {
-                "storytelling_viewed": true,
-                "gift_sent": false,
-            }
-        },
-        "error": null
+    "id": "string",
+    "username": "string",
+    "name": "string",
+    "preferences": "string",
+    "completed_events": [
+        "string"
+    ]
     }
     ```
 
 
 ### 1.4. Изменение информации о пользователе
 
-* PATCH `/api/user`
+* PATCH `/api/v1/user`
 * Описание: Изменение данных пользователя (имя, email, пароль).
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Body:
     ```json
     {
-        "name": "string",
-        "preferences": "string"
-    }
-    ```
-
-* Ответ:
-    ```json
-    {
-        "data": {
-            "name": "string",
-            "preferences": "string",
-        },
-        "error": null
+    "name": "string",
+    "preferences": "string"
     }
     ```
 
 ### 1.5. Получение списка лобби пользователя
 
-* GET `/api/user/lobbies`
+* GET `/api/v1/user/lobbies`
 * Описание: Получение списка лобби, в котором пользователь принимает участие.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 
 * Ответ:
     ```json
+    [
     {
-        "data": [
-            {
-                "lobby_code": "<lobby_code>",
-                "lobby_name": "<lobby_name>",
-                "is_started": false
-            }
-        ],
-        "error": null
+        "lobby_code": "string",
+        "lobby_name": "string",
+        "is_started": true
     }
+    ]
     ```
 
 
@@ -128,58 +104,53 @@
 
 ### 2.1. Создание нового лобби
 
-* POST `/api/lobby`
+* POST `/api/v1/lobby`
 * Описание: Создание нового лобби для игры.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Body:
     ```json
     {
-        "lobby_name": "string"
+    "lobby_name": "string"
     }
     ```
 
 * Ответ:
     ```json
     {
-        "data": {
-            "lobby_id": "lobby_code"
-        },
-        "error": null
+    "lobby_code": "string",
+    "lobby_name": "string"
     }
     ```
 
 
 ### 2.2. Получение информации о лобби
 
-* GET `/api/lobby/{lobby_id}`
+* GET `/api/v1/lobby/{lobby_id}`
 * Описание: Получение данных о лобби по его коду.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Ответ:
     ```json
     {
-        "data": {
-            "lobby_id": "string",
-            "lobby_name": "string",
-            "participants": [
-                {   
-                    "id": 1,
-                    "username": "string",
-                    "name": "string"
-                }
-            ],
-            "is_started": false,
-            "is_admin": false
-        },
-        "error": null
+    "lobby_id": "string",
+    "lobby_name": "string",
+    "participants": [
+        {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "username": "string",
+        "name": "string"
+        }
+    ],
+    "is_started": true,
+    "is_admin": true
     }
     ```
 
 
 ### 2.3. Присоединение к лобби
 
-* POST `/api/lobby/join`
+* POST `/api/v1/lobby/join`
 * Описание: Присоединение к существующему лобби.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
@@ -190,21 +161,14 @@
     }
     ```
 
-* Ответ:
-    ```json
-    {
-        "message": "Successfully joined the lobby"
-    }
-    ```
-
 ### 2.4. Настроить вебсокет-соединение
-* WS /api/ws/lobby/{lobby_id} 
+* WS /api/v1/ws/lobby/{lobby_id}
 ?
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Ответ:
     ```json
-    {  
+    {
         "santa_for_user": {
             "username": "string",
             "name": "string",
@@ -215,60 +179,37 @@
 
 ### 2.5. Начало игры
 
-* POST `/api/lobby/{lobby_id}/start`
+* POST `/api/v1/lobby/{lobby_id}/start`
 * Описание: Запуск игры в лобби.
+* Headers:
+    * Authorization: `Bearer <jwt_token>`
+
+### 2.6. Получение информации о подарке
+
+* GET `/api/v1/lobby/{lobby_id}/gift`
+* Описание: Получение информации о подарке.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Ответ:
     ```json
     {
-        "santa_for_user": {
-            "username": "string",
-            "wishlist": "string_url"
-        }
+    "username": "string",
+    "name": "string",
+    "preferences": "string"
     }
     ```
-
 
 ## 3. Просмотр событий (сторителлинг, результаты игры и т.д.)
 
 ### 3.1. Отметить ивент как пройденный
 
-* POST `/api/events/complete`
+* POST `/api/v1/events/complete`
 * Описание: Маркировка определенного ивента (например, просмотр сторителлинга) как завершенного.
 * Headers:
     * Authorization: `Bearer <jwt_token>`
 * Body:
     ```json
     {
-        "event_name": "string"
-    }
-    ```
-
-* Ответ:
-    ```json
-    {
-        "data": null,
-        "error": null
-    }
-    ```
-
-
-### 3.2. Получение списка завершенных ивентов пользователя
-
-* GET `/api/events/completed`
-* Описание: Получение информации о пройденных ивентах пользователем.
-* Headers:
-    * Authorization: `Bearer <jwt_token>`
-* Ответ:
-    ```json
-    {
-        "data": {
-            "completed_events": {
-                "storytelling_viewed": true,
-                "gift_sent": false
-            }
-        },
-        "error": null
+    "event_name": "string"
     }
     ```

@@ -7,9 +7,11 @@ class SUserCreate(BaseModel):
     preferences: str | None = None
     password: str
 
+
 class SUserLogin(BaseModel):
-    username: str 
+    username: str
     password: str
+
 
 class SJWTResponse(BaseModel):
     token: str

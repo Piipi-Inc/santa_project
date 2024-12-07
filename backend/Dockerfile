@@ -25,9 +25,11 @@ ENV VIRTUAL_ENV=$DST/.venv \
 COPY --from=build_stage ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY src/ ${DST}src/
+COPY assets/ ${DST}assets/
+COPY alembic.ini ${DST}
 
 WORKDIR ${DST}
 
 EXPOSE 8000
 
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["bash", "-c", "alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8000"]

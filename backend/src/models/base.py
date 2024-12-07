@@ -3,9 +3,11 @@ from sqlalchemy import MetaData
 
 metadata = MetaData()
 
+
 @as_declarative(metadata=metadata)
 class Base:
     """Base sqlalchemy object"""
+
     id: int
     __name__: str
 

@@ -2,8 +2,10 @@ from sqlalchemy import Column, UUID, String, DateTime
 from sqlalchemy.sql import func
 from src.models.base import Base
 
+
 class User(Base):
     """User sqlalchemy object"""
+
     id = Column(UUID, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     name = Column(String, nullable=False)

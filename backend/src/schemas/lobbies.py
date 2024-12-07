@@ -2,16 +2,25 @@ from pydantic import BaseModel
 from typing import List
 from uuid import UUID
 
+
 class JoinedParticipant(BaseModel):
     id: UUID
     username: str
     name: str
 
+
 class SCreateLobbyRequest(BaseModel):
     lobby_name: str
 
+
+class SCreateLobbyResponse(BaseModel):
+    lobby_code: str
+    lobby_name: str
+
+
 class SJoinLobbyRequest(BaseModel):
     lobby_id: str
+
 
 class SLobbyResponse(BaseModel):
     lobby_id: str
@@ -20,7 +29,8 @@ class SLobbyResponse(BaseModel):
     is_started: bool
     is_admin: bool
 
+
 class SGiftResponse(BaseModel):
-    username: str 
+    username: str
     name: str
     preferences: str
