@@ -1,5 +1,6 @@
 import { useLayoutEffect } from "react";
 import { setupFontSize } from "./shared/libs/setupFontSize";
+import { ScreenSwitch } from "./components/ScreenSwitch";
 
 export const App = () => {
   useLayoutEffect(() => {
@@ -20,7 +21,7 @@ export const App = () => {
 
   return (
     <div>
-      <h2 style={{ fontSize: "12rem" }}>пук пук как как </h2>
+      <ScreenSwitch />
     </div>
   );
 };
