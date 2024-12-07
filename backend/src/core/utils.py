@@ -6,6 +6,12 @@ from sqlalchemy import select
 from src.models.lobby import Lobby
 
 async def generate_unique_lobby_id(session: Session, length: int = 6) -> str:
+    """
+    Generate unique lobby code
+    :param: session: sqlalchemy session
+    :param: length: length of the code
+    :return: the code itself
+    """
     while True:
         characters = string.ascii_uppercase + string.digits
         new_id = ''.join(random.choices(characters, k=length))

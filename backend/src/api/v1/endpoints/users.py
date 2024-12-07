@@ -10,13 +10,19 @@ from src.models.participant import Participant
 
 from src.services.auth import auth_manager
 from src.core.database import get_async_session
-from src.schemas.users import UserResponse, UpdateUserRequest
+from src.schemas.users import SUserResponse, SUpdateUserRequest, SUserLobby
 
 
 router = APIRouter()
 
 @router.get('/')
-async def get_user_data(current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)):
+async def get_user_data(current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> SUserResponse:
+    """
+    Get current user data endpoint
+    :param: current_user: current user from auth service
+    :param: session: sqlalchemy session
+    :return: user data with specific columns
+    """
     stmt = select(Event.event_name).where(Event.user_id == current_user.id)
     res = await session.execute(stmt)
     if res:
@@ -24,7 +30,7 @@ async def get_user_data(current_user: User = Depends(auth_manager.get_current_us
     else:
         completed_events = []
 
-    response = UserResponse(
+    response = SUserResponse(
         id=current_user.id,
         username=current_user.username,
         name=current_user.name,
@@ -35,7 +41,13 @@ async def get_user_data(current_user: User = Depends(auth_manager.get_current_us
     return response
 
 @router.patch('/')
-async def update_user_info(data: UpdateUserRequest, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)):
+async def update_user_info(data: SUpdateUserRequest, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> None:
+    """
+    Update user info endpoint
+    :param: data: data to update
+    :param: current_user: current user from auth service
+    :param: session: sqlalchemy session
+    """
     data = data.model_dump()
     
     stmt = update(User).where(User.id == current_user.id).values({k: data[k] for k in data if data[k]})
@@ -46,7 +58,13 @@ async def update_user_info(data: UpdateUserRequest, current_user: User = Depends
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
 @router.get('/lobbies')
-async def get_user_lobbies(current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)):
+async def get_user_lobbies(current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> list[SUserLobby]:
+    """
+    Get list of current user`s lobbies
+    :param: current_user: current user
+    :param: session: sqlalchemy session
+    :return: list of user`s lobbies
+    """
     stmt = select(
         Lobby.id, Lobby.lobby_name, Lobby.is_started
     ).filter(
@@ -59,11 +77,11 @@ async def get_user_lobbies(current_user: User = Depends(auth_manager.get_current
 
     res = await session.execute(stmt)
     data = [
-        {
-            "lobby_code": code,
-            "lobby_name": name,
-            "is_started": is_started
-        } for code, name, is_started in res.all()
+        SUserLobby(
+            lobby_code=code,
+            lobby_name=name,
+            is_started=is_started
+        ) for code, name, is_started in res.all()
     ]
     
     return data

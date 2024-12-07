@@ -9,21 +9,25 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 
 from src.models.user import User
-from src.models.event import Event
 from src.models.lobby import Lobby
 from src.models.participant import Participant
 
 from src.services.auth import auth_manager
 from src.core.database import get_async_session
 from src.core.utils import generate_unique_lobby_id
-from src.schemas.lobbies import CreateLobbyRequest, JoinLobbyRequest, LobbyResponse, JoinedParticipant, GiftResponse
+from src.schemas.lobbies import SCreateLobbyRequest, SJoinLobbyRequest, SLobbyResponse, JoinedParticipant, SGiftResponse
 
 
 router = APIRouter()
 
-
 @router.post('/', status_code=status.HTTP_201_CREATED)
-async def create_lobby(lobby_data: CreateLobbyRequest, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)):
+async def create_lobby(lobby_data: SCreateLobbyRequest, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> None:
+    """
+    Create lobby
+    :param: lobby_data: lobby data
+    :param: current_user: current user
+    :param: session: sqlalchemy session
+    """
     new_lobby = Lobby(
         id = await generate_unique_lobby_id(session),
         lobby_name=lobby_data.lobby_name
@@ -46,8 +50,14 @@ async def create_lobby(lobby_data: CreateLobbyRequest, current_user: User = Depe
         raise e
 
 @router.get('/{lobby_id}')
-async def get_lobby_info(lobby_id: str, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> LobbyResponse:
-    print(lobby_id)
+async def get_lobby_info(lobby_id: str, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> SLobbyResponse:
+    """
+    Get info of the lobby
+    :param: lobby_id: id of the lobby
+    :param: current_user: current user
+    :param: session: sqlalchemy session
+    :return: info about the lobby
+    """
     stmt = select(
         Lobby.id,
         Lobby.lobby_name,
@@ -85,9 +95,7 @@ async def get_lobby_info(lobby_id: str, current_user: User = Depends(auth_manage
                 name=p[2]
             ) for p in res.all()]
 
-        print(res_lobby, participant_list)
-
-        return LobbyResponse(
+        return SLobbyResponse(
             lobby_id = res_lobby[0][0],
             lobby_name = res_lobby[0][1],
             participants=participant_list,
@@ -99,8 +107,13 @@ async def get_lobby_info(lobby_id: str, current_user: User = Depends(auth_manage
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lobby not found or User not a participant of this lobby")
 
 @router.post('/join', status_code=status.HTTP_201_CREATED)
-async def join_lobby(lobby_data: JoinLobbyRequest, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)):
-
+async def join_lobby(lobby_data: SJoinLobbyRequest, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> None:
+    """
+    Join current user to the lobby
+    :param: lobby_data: data of the lobby to join
+    :param: current_user: current user
+    :param: session: sqlalchemy session
+    """
     stmt = select(
         Lobby.id, Lobby.lobby_name, Lobby.is_started
     ).filter(
@@ -259,8 +272,6 @@ html = """
 async def get():
     return HTMLResponse(html)
 
-active_lobbies = {}
-
 class LobbyConnectionManager:
     def __init__(self):
         self.active_connections: dict[str, set[WebSocket]] = {}
@@ -274,7 +285,7 @@ class LobbyConnectionManager:
     def disconnect(self, lobby_id: str, websocket: WebSocket):
         if lobby_id in self.active_connections:
             self.active_connections[lobby_id].discard(websocket)
-            if not self.active_connections[lobby_id]:  # Если больше нет подключений
+            if not self.active_connections[lobby_id]:
                 del self.active_connections[lobby_id]
 
     async def broadcast(self, lobby_id: str, message: dict):
@@ -289,40 +300,37 @@ manager = LobbyConnectionManager()
 async def lobby_websocket(
     lobby_id: str,
     websocket: WebSocket,
-    current_user: Participant = Depends(auth_manager.get_current_user),  # Получаем текущего пользователя
+    current_user: Participant = Depends(auth_manager.get_current_user),
     session: AsyncSession = Depends(get_async_session),
 ):
-    # Проверка существования лобби
     lobby = await session.get(Lobby, lobby_id)
     
     if not lobby:
-        await websocket.close(code=1003)  # Закрываем соединение с ошибкой
+        await websocket.close(code=1003)
         return
     
-    # Добавляем подключение
     await manager.connect(lobby_id, websocket)
 
     try:
         while True:
-            # Ожидание сообщений (пользователи не отправляют сообщений)
             data = await websocket.receive_json()
-            # Если сообщение получено, его можно обработать (опционально)
     except WebSocketDisconnect:
-        # Удаляем пользователя из хранилища подключений
         manager.disconnect(lobby_id, websocket)
 
 @router.post("/{lobby_id}/start")
 async def start_lobby(
     lobby_id: str,
-    current_user: Participant = Depends(auth_manager.get_current_user),  # Получаем текущего пользователя
+    current_user: Participant = Depends(auth_manager.get_current_user),
     session: AsyncSession = Depends(get_async_session),
 ):
-    # Проверяем, что пользователь администратор
     participant = await session.execute(select(Participant).where(Participant.lobby_id == lobby_id).where(Participant.user_id == current_user.id))
     participant = participant.scalar()
     
     if not participant or not participant.is_admin:
-        return {"error": "Only admins can start the lobby"}
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only admin can start the lobby"
+        )
 
     stmt = (
         select(Participant.user_id)
@@ -331,8 +339,7 @@ async def start_lobby(
     res = await session.execute(stmt)
     participant_list = [i[0] for i in set(res.all())]
     random.shuffle(participant_list)
-    print(participant_list)
-    # Обновляем статус лобби
+    
     stmt = (
         update(Lobby)
         .where(Lobby.id == lobby_id)
@@ -352,14 +359,20 @@ async def start_lobby(
 
     await session.commit()
 
-    # Рассылаем всем пользователям сообщение о старте лобби
     message = {"type": "lobby_started", "lobby_id": lobby_id}
     await manager.broadcast(lobby_id, message)
 
     return {"message": "Lobby started"}
 
-@router.get('/{lobby_id}/gift', deprecated=True)
-async def get_gift(lobby_id: str, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> GiftResponse:
+@router.get('/{lobby_id}/gift')
+async def get_gift(lobby_id: str, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> SGiftResponse:
+    """
+    Get the santa letter of the current user in the specified lobby
+    :param: lobby_id: the id of the lobby
+    :param: current_user: current user
+    :param: session: sqlalchemy session
+    :return: the santa letter
+    """
     stmt = select(
         Participant.santa_to,
     ).where(
@@ -382,7 +395,7 @@ async def get_gift(lobby_id: str, current_user: User = Depends(auth_manager.get_
 
     res = await session.execute(stmt)
     res = res.all()
-    result = GiftResponse(
+    result = SGiftResponse(
         username=res[0][0],
         name=res[0][1],
         preferences=res[0][2]

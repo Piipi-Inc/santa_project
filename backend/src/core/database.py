@@ -13,5 +13,6 @@ async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """Yield async session"""
     async with async_session_maker() as session:
         yield session

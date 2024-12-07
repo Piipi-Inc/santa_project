@@ -8,17 +8,19 @@ from src.models.user import User
 from src.models.event import Event
 from src.services.auth import auth_manager
 from src.core.database import get_async_session
+from src.schemas.events import SCompleteEvent
 
-
-from pydantic import BaseModel
-
-class SCompleteEvent(BaseModel):
-    event_name: str
 
 router = APIRouter()
 
 @router.post('/complete', status_code=status.HTTP_201_CREATED)
-async def complete_event(event_name: SCompleteEvent, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)):
+async def complete_event(event_name: SCompleteEvent, current_user: User = Depends(auth_manager.get_current_user), session: AsyncSession = Depends(get_async_session)) -> None:
+    """
+    Complete the specified event for current user
+    :param: event_name: the event to complete
+    :param: current_user: current user
+    :param: session: sqlalchemy session
+    """
     new_event = Event(
         id = uuid4(),
         user_id = current_user.id,

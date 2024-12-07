@@ -1,12 +1,15 @@
 from pydantic import BaseModel
 
 
-class UserCreate(BaseModel):
+class SUserCreate(BaseModel):
     username: str
     name: str
     preferences: str | None = None
     password: str
 
-class UserLogin(BaseModel):
+class SUserLogin(BaseModel):
     username: str 
     password: str
+
+class SJWTResponse(BaseModel):
+    token: str

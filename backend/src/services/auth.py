@@ -6,7 +6,7 @@ from fastapi import Cookie, HTTPException, status
 
 from src.models.user import User
 from src.core.database import get_async_session
-from src.schemas.auth import UserCreate, UserLogin
+from src.schemas.auth import SUserCreate, SUserLogin
 
 import hashlib
 import jwt
@@ -20,10 +20,16 @@ from src.core.config import Config
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class AuthManager:
+    """JWT auth manager service"""
     def __init__(self):
         self.config = Config()
 
     def create_jwt_token(self, user: User) -> str:
+        """
+        Create jwt token based on the recieved user
+        :param: user: user sqlalchemy object
+        :return: jwt token with user id
+        """
         data_to_decode = {
             "user_id": str(user.id)
         }
@@ -32,9 +38,20 @@ class AuthManager:
 
     @staticmethod
     def hash_password(password: str) -> str:
+        """
+        Hash recieved password
+        :param: password: password itself
+        :return: sha256 hash of the password
+        """
         return hashlib.sha256(password.encode()).hexdigest()
 
-    async def create_user(self, user_data: UserCreate, session: AsyncSession) -> User:
+    async def create_user(self, user_data: SUserCreate, session: AsyncSession) -> str:
+        """
+        Create user in the db
+        :param: user_data: main data of the user
+        :param: session: sqlalchemy session
+        :return: jwt token of the current user
+        """
         new_user = User(
             id=uuid4(),
             username=user_data.username,
@@ -55,8 +72,13 @@ class AuthManager:
             await session.rollback()
             raise e
     
-    async def login_user(self, user: UserLogin, session: AsyncSession) -> UUID:
-        
+    async def login_user(self, user: SUserLogin, session: AsyncSession) -> str:
+        """
+        Ligin user and give jwt token
+        :param: user: username and password
+        :param: session: sqlalchemy session
+        :return: jwt token of the user
+        """
         result = await session.execute(
             select(User).where(User.username == user.username)
         )
@@ -83,8 +105,12 @@ class AuthManager:
         return jwt_token
 
     # def get_current_user(self, token: Annotated[str, Depends(oauth2_scheme)]):
-    async def get_current_user(self, token: str | None = Cookie(default=None, alias='santa_token')):
-
+    async def get_current_user(self, token: str | None = Cookie(default=None, alias='santa_token')) -> User:
+        """
+        Get current user based on the jwt token from cookie
+        :param: token: jwt token
+        :return: current user
+        """
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",

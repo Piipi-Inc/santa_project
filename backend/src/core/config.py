@@ -3,6 +3,7 @@ from pydantic import Field
 
 
 class Config(BaseSettings):
+    """API config"""
     db_user: str = Field(..., alias='DB_USER')
     db_pass: str = Field(..., alias='DB_PASS')
     db_host: str = Field(..., alias='DB_HOST')
@@ -11,6 +12,7 @@ class Config(BaseSettings):
 
     jwt_secret: str = Field(..., alias='JWT_SECRET')
     jwt_algorithm: str = "HS256"
+    cookie_key: str = Field("santa_token", alias='COOKIE_KEY')
 
     class Config:
         env_file='./.env'

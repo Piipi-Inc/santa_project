@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 from uuid import UUID
 
 class JoinedParticipant(BaseModel):
@@ -7,20 +7,20 @@ class JoinedParticipant(BaseModel):
     username: str
     name: str
 
-class CreateLobbyRequest(BaseModel):
+class SCreateLobbyRequest(BaseModel):
     lobby_name: str
 
-class JoinLobbyRequest(BaseModel):
+class SJoinLobbyRequest(BaseModel):
     lobby_id: str
 
-class LobbyResponse(BaseModel):
+class SLobbyResponse(BaseModel):
     lobby_id: str
     lobby_name: str
     participants: List[JoinedParticipant]
     is_started: bool
     is_admin: bool
 
-class GiftResponse(BaseModel):
+class SGiftResponse(BaseModel):
     username: str 
     name: str
     preferences: str
