@@ -1,0 +1,8 @@
+body {
+  height: 100vh;
+  --mobile-unit: 0.3125vw;
+
+  @media (min-width: 568px) {
+    --mobile-unit: 0.176vw;
+  }
+}
