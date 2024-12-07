@@ -1,6 +1,8 @@
 body {
   height: 100vh;
   --mobile-unit: 0.3125vw;
+  margin: 0;
+  padding: 0;
 
   @media (min-width: 568px) {
     --mobile-unit: 0.176vw;
