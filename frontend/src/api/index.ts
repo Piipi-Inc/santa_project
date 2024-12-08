@@ -8,7 +8,7 @@ export class ApiService {
   private readonly axiosInstance: AxiosInstance;
   private readonly headers: Partial<AxiosRequestHeaders>;
   private readonly baseUrl = process.env.VITE_BASE_URL;
-  private readonly apiUrl = `${this.baseUrl}/api/`;
+  private readonly apiUrl = `${this.baseUrl}/api/v1/`;
 
   constructor() {
     this.headers = {
@@ -49,6 +49,14 @@ export class ApiService {
       username,
       password,
     });
+  };
+
+  public logout = async () => {
+    if (this.isMockBackendEnabled) {
+      return Promise.resolve();
+    }
+
+    return this.axiosInstance.post(`${this.apiUrl}/logout`);
   };
 
   public getUser = async () => {
@@ -98,7 +106,7 @@ export class ApiService {
 
   public joinLobby = async ({ lobby_id }: T.JoinLobbyPayload) => {
     if (this.isMockBackendEnabled) {
-      return Promise.resolve(mocks.joinLobby);
+      return Promise.resolve();
     }
 
     return this.axiosInstance.post(`${this.apiUrl}/lobby/join`, { lobby_id });
@@ -106,28 +114,28 @@ export class ApiService {
 
   public startGame = async ({ lobby_id }: { lobby_id: string }) => {
     if (this.isMockBackendEnabled) {
-      return Promise.resolve(mocks.startGameResponse);
+      return Promise.resolve();
     }
 
     return this.axiosInstance.post(`${this.apiUrl}/lobby/${lobby_id}/start`);
   };
 
+  public getGift = async ({ lobby_id }: { lobby_id: string }) => {
+    if (this.isMockBackendEnabled) {
+      return Promise.resolve(mocks.getGiftResponse);
+    }
+
+    return this.axiosInstance.post(`${this.apiUrl}/lobby/${lobby_id}/gift`);
+  };
+
   public saveEvent = async ({ event_name }: { event_name: string }) => {
     if (this.isMockBackendEnabled) {
-      return Promise.resolve(mocks.saveEventResponse);
+      return Promise.resolve();
     }
 
     return this.axiosInstance.post(`${this.apiUrl}/events/complete`, {
       event_name,
     });
-  };
-
-  public getEvents = async () => {
-    if (this.isMockBackendEnabled) {
-      return Promise.resolve(mocks.events);
-    }
-
-    return this.axiosInstance.get(`${this.apiUrl}/events/completed`);
   };
 }
 
