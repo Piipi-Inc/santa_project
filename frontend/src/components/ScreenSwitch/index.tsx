@@ -13,6 +13,7 @@ const screenMap: Record<
   [Screens.LOADER]: () => import("../Loader"),
   [Screens.AUTHENTICATE]: () => import("../Authenticate"),
   [Screens.WELCOME]: () => import("../Welcome"),
+  [Screens.MAIN]: () => import("../Main"),
 };
 
 export const ScreenSwitch = observer(() => {

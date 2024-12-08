@@ -1,7 +1,9 @@
 import { Context, createContext, useContext } from "react";
 import { ScreenStore } from "./screen";
 import { Screens } from "./screen/types/enums";
-import { wait } from "../shared/utils/wait";
+import { wait } from "src/shared/utils/wait";
+import { checkAuth } from "src/shared/utils/checkAuth";
+import api from "src/api";
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
@@ -12,8 +14,14 @@ export class RootStore {
   }
 
   public init = async () => {
-    const hasCookies = true;
-    await wait(2000);
+    // await api.login({"username": "test", "password": "test"})
+    const [isAuthenticated] = await Promise.all([await checkAuth(), await wait(2000)]);
+    console.log(isAuthenticated)
+    if (isAuthenticated) {
+      await this.screenStore.setScreen(Screens.MAIN);
+      return;
+    }
+
     await this.screenStore.setScreen(Screens.WELCOME);
   };
 
