@@ -4,17 +4,20 @@ import { Screens } from "src/store/screen/types/enums";
 import { lazy } from "react";
 import { useMemo, Suspense } from "react";
 import styles from "./index.module.scss";
+import cn from "classnames";
 
 const screenMap: Record<
   Screens,
   () => Promise<{ default: React.ComponentType }>
 > = {
   [Screens.LOADER]: () => import("../Loader"),
+  [Screens.AUTHENTICATE]: () => import("../Authenticate"),
+  [Screens.WELCOME]: () => import("../Welcome"),
 };
 
 export const ScreenSwitch = observer(() => {
   const {
-    screenStore: { currentScreen },
+    screenStore: { currentScreen, isSwitching },
   } = useStore();
 
   const LazyScreen = useMemo(() => {
@@ -28,7 +31,12 @@ export const ScreenSwitch = observer(() => {
 
   return (
     <Suspense fallback={<div></div>}>
-      <div className={styles.screenSwitchWrap}>
+      <div
+        className={cn(
+          styles.screenSwitchWrap,
+          isSwitching && styles.screenSwitchWrap__isSwitching
+        )}
+      >
         <LazyScreen />
       </div>
     </Suspense>

@@ -1,10 +1,11 @@
 import styles from "./index.module.scss";
-import SantaImage from "./imgs/santa.svg?react";
+import SantaImage from "src/shared/images/santa.svg?react";
+import { Title } from "src/shared/components/Title";
 
 const Loader = () => {
   return (
     <div className={styles.loader}>
-      <h1 className={styles.title}>Тайный Санта</h1>
+      <Title className={styles.title} />
       <SantaImage className={styles.image} />
     </div>
   );
