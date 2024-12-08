@@ -3,6 +3,7 @@ import { ScreenStore } from "./screen";
 import { Screens } from "./screen/types/enums";
 import { wait } from "src/shared/utils/wait";
 import { checkAuth } from "src/shared/utils/checkAuth";
+import api from "src/api";
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
@@ -13,10 +14,14 @@ export class RootStore {
   }
 
   public init = async () => {
-    const isAuthenticated = await checkAuth();
-    console.log(isAuthenticated);
+    // await api.login({"username": "test", "password": "test"})
+    const [isAuthenticated] = await Promise.all([await checkAuth(), await wait(2000)]);
+    console.log(isAuthenticated)
+    if (isAuthenticated) {
+      await this.screenStore.setScreen(Screens.MAIN);
+      return;
+    }
 
-    await wait(2000);
     await this.screenStore.setScreen(Screens.WELCOME);
   };
 

@@ -7,7 +7,6 @@ export const checkAuth = async () => {
         .then(() => {}
         )
         .catch((err) => {
-            console.log(err)
             if (err.status === 401) {
                 isAuthed = false;
             }
