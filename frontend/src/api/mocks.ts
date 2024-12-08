@@ -1,31 +1,20 @@
 export const mocks = {
   registerResponse: {
-    data: {
-      token: "123123123",
-    },
-    error: null,
+    token: "123123123",
   },
   loginResponse: {
-    data: {
-      token: "123123123",
-    },
-    error: null,
+    token: "123123123"
   },
   user: {
-    data: {
-      id: 1,
-      username: "puker228",
-      name: "Puker",
-      preferences: "plus vibes",
-      completed_events: {
-        storytelling_viewed: true,
-        gift_sent: false,
-      },
-    },
-    error: null,
+    id: "0817cb1e-61fa-4425-a2bc-7fee2268b81c",
+    username: "puker228",
+    name: "Puker",
+    preferences: "plus vibes",
+    completed_events: [
+      "storytelling",
+    ],
   },
-  userLobbies: {
-    data: [
+  userLobbies: [
       {
         lobby_code: "ABCDEF",
         lobby_name: "NEW YEAR",
@@ -34,7 +23,7 @@ export const mocks = {
       {
         lobby_code: "MNBBVC",
         lobby_name: "BIRTHDAY",
-        is_started: false,
+        is_started: true,
       },
       {
         lobby_code: "YHNUJM",
@@ -42,55 +31,31 @@ export const mocks = {
         is_started: false,
       },
     ],
-    error: null,
-  },
   newLobby: {
-    data: {
-      lobby_id: "RFVTGB",
+      lobby_code: "RFVTGB",
+      lobby_name: "Pukakapisi"
     },
-    error: null,
-  },
   lobby: {
-    data: {
-      lobby_id: "1",
-      lobby_name: "VBNGHJ",
-      participants: [
-        {
-          id: 1,
-          username: "keker",
-          name: "Keker",
-        },
-        {
-          id: 2,
-          username: "pooker",
-          name: "Pooker",
-        },
-      ],
-      is_started: false,
-      is_admin: false,
-    },
-    error: null,
-  },
-  joinLobby: {
-    message: "Successfully joined the lobby",
-  },
-  startGameResponse: {
-    santa_for_user: {
-      username: "pook pook",
-      wishlist: "burgir",
-    },
-  },
-  saveEventResponse: {
-    data: null,
-    error: null,
-  },
-  events: {
-    data: {
-      completed_events: {
-        storytelling_viewed: true,
-        gift_sent: false,
+    lobby_id: "RFVTGB",
+    lobby_name: "Pukakapisi",
+    participants: [
+      {
+        id: "0817cb1e-61fa-4425-a2bc-7fee2268b81c",
+        username: "keker",
+        name: "Keker",
       },
-    },
-    error: null,
+      {
+        id: "5bdcb073-7eb0-420d-b1d2-cfd25efc1a0d",
+        username: "pooker",
+        name: "Pooker",
+      },
+    ],
+    is_started: false,
+    is_admin: false,
+  },
+  getGiftResponse: {
+    username: "pook pook",
+    name: "kakapisya",
+    preferences: "burgir",
   },
 };
