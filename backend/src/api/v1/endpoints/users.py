@@ -16,7 +16,7 @@ from src.schemas.users import SUserResponse, SUpdateUserRequest, SUserLobby
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("")
 async def get_user_data(
     current_user: User = Depends(auth_manager.get_current_user),
     session: AsyncSession = Depends(get_async_session),
@@ -45,7 +45,7 @@ async def get_user_data(
     return response
 
 
-@router.patch("/")
+@router.patch("")
 async def update_user_info(
     data: SUpdateUserRequest,
     current_user: User = Depends(auth_manager.get_current_user),

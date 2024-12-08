@@ -1,7 +1,8 @@
 import { Context, createContext, useContext } from "react";
 import { ScreenStore } from "./screen";
 import { Screens } from "./screen/types/enums";
-import { wait } from "../shared/utils/wait";
+import { wait } from "src/shared/utils/wait";
+import { checkAuth } from "src/shared/utils/checkAuth";
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
@@ -12,7 +13,9 @@ export class RootStore {
   }
 
   public init = async () => {
-    const hasCookies = true;
+    const isAuthenticated = await checkAuth();
+    console.log(isAuthenticated);
+
     await wait(2000);
     await this.screenStore.setScreen(Screens.WELCOME);
   };

@@ -4,21 +4,22 @@ import * as T from "./types/types";
 
 export class ApiService {
   private readonly isMockBackendEnabled =
-    process.env.VITE_IS_MOCK_BACKEND_ENABLED === "on";
+    import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === "on";
   private readonly axiosInstance: AxiosInstance;
   private readonly headers: Partial<AxiosRequestHeaders>;
-  private readonly baseUrl = process.env.VITE_BASE_URL;
-  private readonly apiUrl = `${this.baseUrl}/api/v1/`;
+  private readonly baseUrl =  import.meta.env.VITE_BASE_URL;
+  private readonly apiUrl = `${this.baseUrl}/api/v1`;
 
   constructor() {
     this.headers = {
       "Content-Type": "application/json",
-      accept: "application/json",
+      accept: "application/json"
     };
     this.axiosInstance = axios.create({
       headers: this.headers,
       timeout: 5000,
       baseURL: this.baseUrl,
+      withCredentials: true,
     });
   }
 
@@ -32,7 +33,7 @@ export class ApiService {
       return Promise.resolve(mocks.registerResponse);
     }
 
-    return this.axiosInstance.post(`${this.apiUrl}/register`, {
+    return this.axiosInstance.post(`${this.apiUrl}/auth/register`, {
       username,
       name,
       preferences,
@@ -45,7 +46,7 @@ export class ApiService {
       return Promise.resolve(mocks.loginResponse);
     }
 
-    return this.axiosInstance.post(`${this.apiUrl}/login`, {
+    return this.axiosInstance.post(`${this.apiUrl}/auth/login`, {
       username,
       password,
     });
@@ -56,7 +57,7 @@ export class ApiService {
       return Promise.resolve();
     }
 
-    return this.axiosInstance.post(`${this.apiUrl}/logout`);
+    return this.axiosInstance.post(`${this.apiUrl}/auth/logout`);
   };
 
   public getUser = async () => {
