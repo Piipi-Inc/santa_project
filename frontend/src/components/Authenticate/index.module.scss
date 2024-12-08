@@ -38,3 +38,111 @@
   position: absolute;
   font-size: 2.5rem;
 }
+
+.inputBlock {
+  position: absolute;
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  font-size: 3.6rem;
+  color: #fff;
+  font-family: "JetBrains Mono", serif;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+
+  .input {
+    cursor: pointer;
+    margin-left: 0.9rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    width: 32.9rem;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .button {
+    all: unset;
+    background-image: url('data:image/svg+xml,<svg width="134" height="106" viewBox="0 0 134 106" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M134 106H53.5L0 6.5L122.5 0L134 106Z" fill="%23A59E9E"/><path d="M51 40.5L75 79.5L111 17" stroke="white" stroke-width="7"/></svg>');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 13.4rem;
+    height: 10.6rem;
+    margin-left: -4rem;
+    margin-bottom: 1rem;
+    transition: background-image 0.3s ease-in-out;
+  }
+
+  .button_active {
+    background-image: url('data:image/svg+xml,<svg width="134" height="106" viewBox="0 0 134 106" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M134 106H53.5L0 6.5L122.5 0L134 106Z" fill="%23913333"/><path d="M51 40.5L75 79.5L111 17" stroke="white" stroke-width="7"/></svg>');
+    cursor: pointer;
+  }
+}
+
+.inputBlock__login {
+  top: calc(50% + 4.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.5s ease-in-out;
+
+  &-start {
+    opacity: 0;
+  }
+
+  &-login {
+    opacity: 1;
+  }
+
+  &-password {
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .inputWrap {
+    display: flex;
+    align-items: center;
+    padding: 3.1rem 0 1.7rem 3.5rem;
+    width: 50.8rem;
+    height: 9.6rem;
+    background-image: url('data:image/svg+xml,<svg width="508" height="97" viewBox="0 0 508 97" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.44531 16.6252L456.118 0L507.5 96.2523L0 96.2525L9.44531 16.6252Z" fill="%233A452F"/></svg>');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+.inputBlock__password {
+  top: calc(50% + 16.8rem);
+  left: calc(50% + 3rem);
+  transform: translateX(-50%);
+
+  &-start {
+    opacity: 0;
+  }
+
+  &-login {
+    opacity: 0;
+  }
+
+  &-password {
+    opacity: 1;
+  }
+
+  .inputWrap {
+    display: flex;
+    align-items: center;
+    padding: 3.1rem 0 1.7rem 3.5rem;
+    width: 57rem;
+    height: 9.9rem;
+    background-image: url('data:image/svg+xml,<svg width="570" height="99" viewBox="0 0 570 99" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.44531 19L517.5 0L569.5 99H0L9.44531 19Z" fill="%233A452F"/></svg>');
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}

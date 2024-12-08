@@ -5,7 +5,7 @@ import { wait } from "../shared/utils/wait";
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
-  private auth_scenario: "login" | "register" = "login";
+  public auth_scenario: "login" | "register" = "login";
 
   constructor() {
     this.screenStore = new ScreenStore();
@@ -22,6 +22,28 @@ export class RootStore {
   ) => {
     this.auth_scenario = auth_scenario;
     await this.screenStore.setScreen(Screens.AUTHENTICATE);
+  };
+
+  public handleAuth = async ({
+    login,
+    password,
+  }: {
+    login: string;
+    password: string;
+  }) => {
+    if (this.auth_scenario === "login") {
+      console.log(login, password);
+
+      const isSuccessful = false;
+
+      if (!isSuccessful) await this.screenStore.setScreen(Screens.AUTHENTICATE);
+      // api.login()
+    } else {
+      console.log(login, password);
+
+      await this.screenStore.setScreen(Screens.LOADER);
+      // api.register()
+    }
   };
 }
 
