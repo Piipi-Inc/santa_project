@@ -1,8 +1,11 @@
 import { useLayoutEffect } from "react";
 import { setupFontSize } from "./shared/libs/setupFontSize";
 import { ScreenSwitch } from "./components/ScreenSwitch";
+import { useStore } from "./store";
 
 export const App = () => {
+  const store = useStore();
+
   useLayoutEffect(() => {
     const setupUi = () => {
       setTimeout(() => {
@@ -11,6 +14,7 @@ export const App = () => {
     };
 
     setupUi();
+    store.init();
 
     window.addEventListener("resize", setupUi);
 
