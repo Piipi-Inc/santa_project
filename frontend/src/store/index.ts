@@ -2,14 +2,15 @@ import { Context, createContext, useContext } from "react";
 import { ScreenStore } from "./screen";
 import { Screens } from "./screen/types/enums";
 import { wait } from "src/shared/utils/wait";
-import { checkAuth } from "src/shared/utils/checkAuth";
 import api from "src/api";
 import { LobbiesStore } from "./Lobbies";
+import { CurrentUser } from "./types/types";
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
   public readonly lobbiesStore: LobbiesStore;
   public auth_scenario: "login" | "register" = "login";
+  public currentUser: null | CurrentUser;
 
   constructor() {
     this.screenStore = new ScreenStore();
@@ -17,10 +18,16 @@ export class RootStore {
   }
 
   public init = async () => {
-    const [isAuthenticated] = await Promise.all([
-      await checkAuth(),
-      await wait(2000),
-    ]);
+    let isAuthenticated = false
+
+    this.currentUser = await api.getUser().then((res: any) => {
+      console.log(res)
+      isAuthenticated = true;
+      return res.data
+    }).catch(() => {null})
+    console.log(this.currentUser, isAuthenticated)
+    await wait(2000)
+
     if (isAuthenticated) {
       await this.handleAuthenticated();
       await this.screenStore.setScreen(Screens.MAIN);
@@ -52,6 +59,8 @@ export class RootStore {
       await this.screenStore.setScreen(Screens.LOADER);
       // api.register()
     }
+
+
   };
 
   private handleAuthenticated = async () => {
@@ -74,7 +83,9 @@ export class RootStore {
         username: login,
         password: password,
       });
+      this.currentUser = await api.getUser().then((res: any) => res.data).catch(() => {null})
       await this.lobbiesStore.init();
+      await this.screenStore.setScreen(Screens.MAIN);
     } catch (e) {
       await this.screenStore.setScreen(Screens.AUTHENTICATE);
     }
