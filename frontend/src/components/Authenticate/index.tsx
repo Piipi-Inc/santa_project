@@ -80,7 +80,7 @@ const Authenticate = observer(() => {
         <button
           onClick={handleSubmitPassword}
           className={cn(styles.button, isPasswordValid && styles.button_active)}
-        ></button>
+        />
       </div>
     </div>
   );

@@ -22,3 +22,10 @@ export type CreateLobbyPayload = {
 export type JoinLobbyPayload = {
   lobby_id: string;
 };
+
+export type UserLobby = {
+  lobby_code: string;
+  lobby_name: string;
+  participants_count: number;
+  is_started: boolean;
+};

@@ -7,13 +7,13 @@ export class ApiService {
     import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === "on";
   private readonly axiosInstance: AxiosInstance;
   private readonly headers: Partial<AxiosRequestHeaders>;
-  private readonly baseUrl =  import.meta.env.VITE_BASE_URL;
+  private readonly baseUrl = import.meta.env.VITE_BASE_URL;
   private readonly apiUrl = `${this.baseUrl}/api/v1`;
 
   constructor() {
     this.headers = {
       "Content-Type": "application/json",
-      accept: "application/json"
+      accept: "application/json",
     };
     this.axiosInstance = axios.create({
       headers: this.headers,
@@ -79,7 +79,7 @@ export class ApiService {
     });
   };
 
-  public getUserLobbies = async () => {
+  public getUserLobbies = async (): Promise<T.UserLobby[]> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.userLobbies);
     }

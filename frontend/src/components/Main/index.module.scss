@@ -1,0 +1,149 @@
+.main {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: "JetBrains Mono", serif;
+}
+
+.title {
+  color: #913333;
+  font-weight: 800;
+  font-size: 6.2rem;
+  position: absolute;
+  top: 3.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
+
+.inputBlock {
+  position: absolute;
+  font-size: 3.6rem;
+  color: #fff;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 19.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.5s ease-in-out;
+}
+
+.inputWrap {
+  position: relative;
+  width: 57rem;
+  height: 9.9rem;
+  background-image: url('data:image/svg+xml,<svg width="570" height="99" viewBox="0 0 570 99" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.44531 19L517.5 0L569.5 99H0L9.44531 19Z" fill="%233A452F"/></svg>');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.label {
+  position: absolute;
+  top: 3.3rem;
+  left: 3.5rem;
+  white-space: nowrap;
+}
+
+.input {
+  width: 17rem;
+  padding: 0;
+  position: absolute;
+  top: 3.3rem;
+  left: 30.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button {
+  all: unset;
+  background-image: url('data:image/svg+xml,<svg width="134" height="106" viewBox="0 0 134 106" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M134 106H53.5L0 6.5L122.5 0L134 106Z" fill="%23A59E9E"/><ellipse cx="70" cy="40.5" rx="26" ry="21.5" stroke="white" stroke-width="7"/><path d="M84 56L119 94" stroke="white" stroke-width="7"/></svg>');
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  width: 13.4rem;
+  height: 10.6rem;
+  margin-left: -4rem;
+  margin-bottom: 1rem;
+  transition: background-image 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.lobbies {
+  padding: 5rem 6.4rem 7.6rem 4.7rem;
+  position: absolute;
+  top: 33.9rem;
+  left: 50%;
+  transform: translate(-50%);
+  width: 121.3rem;
+  background-image: url('data:image/svg+xml,<svg width="1213" height="736" viewBox="0 0 1213 736" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1213 125H0V0L1213 28.5V125Z" fill="%23F7ECCB"/><path d="M1213 736H9.14319e-05L0 125H1213L1213 736Z" fill="%23F7ECCB"/></svg>');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.lobbies__title {
+  font-size: 5rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.lobbies__list {
+  margin-top: 4.5rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 3.5rem;
+}
+
+.lobby {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url('data:image/svg+xml,<svg width="1102" height="77" viewBox="0 0 1102 77" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1040.4 77L1102 0H14.215L0 77H1040.4Z" fill="%23913333"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  color: #fff;
+  padding: 1.5rem 7.1rem 1.4rem 3.7rem;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.lobby__finished {
+  background-image: url('data:image/svg+xml,<svg width="1102" height="77" viewBox="0 0 1102 77" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1040.4 77L1102 0H14.215L0 77H1040.4Z" fill="%23A59E9E"/></svg>');
+}
+
+.lobby__code {
+  font-size: 3.6rem;
+  font-weight: 700;
+  margin-right: 4rem;
+}
+
+.lobby__name {
+  font-size: 3.2rem;
+  font-weight: 200;
+  margin-right: auto;
+}
+
+.lobby__participants {
+  font-size: 3.6rem;
+  font-weight: 700;
+}

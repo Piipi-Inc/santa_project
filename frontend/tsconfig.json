@@ -1,12 +1,22 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
+    "outDir": "build/dist",
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "allowJs": false,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "rootDir": "./",
+    "baseUrl": "./",
     "paths": {
-        "src": ["./src"],
-      }
-  }
+      "src": ["./src"],
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "jest",
+    "src/setupTests.ts"
+  ],
 }
