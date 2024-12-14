@@ -15,7 +15,7 @@ export class RootStore {
   constructor() {
     this.user = new User();
     this.screenStore = new ScreenStore();
-    this.lobbiesStore = new LobbiesStore();
+    this.lobbiesStore = new LobbiesStore({ screenStore: this.screenStore });
   }
 
   public init = async () => {

@@ -2,7 +2,13 @@ import cn from "classnames";
 import styles from "./index.module.scss";
 import { UserLobby } from "src/api/types/types";
 
-export const LobbyTable = ({ userLobbies }: { userLobbies: UserLobby[] }) => {
+export const LobbyTable = ({
+  userLobbies,
+  goToLobby,
+}: {
+  userLobbies: UserLobby[];
+  goToLobby: () => Promise<void>;
+}) => {
   return (
     <div className={styles.lobbies__list}>
       {userLobbies?.map((lobby) => (
@@ -12,6 +18,7 @@ export const LobbyTable = ({ userLobbies }: { userLobbies: UserLobby[] }) => {
             styles.lobby,
             lobby.is_started && styles.lobby__finished
           )}
+          onClick={goToLobby}
         >
           <span className={styles.lobby__code}>{lobby.lobby_code}</span>
           <span className={styles.lobby__name}>{lobby.lobby_name}</span>

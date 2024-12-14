@@ -19,6 +19,11 @@ export type CreateLobbyPayload = {
   lobby_name: string;
 };
 
+export type CreateLobbyResponse = {
+  lobby_code: string;
+  lobby_name: string;
+};
+
 export type JoinLobbyPayload = {
   lobby_id: string;
 };
@@ -28,4 +33,16 @@ export type UserLobby = {
   lobby_name: string;
   participants_count: number;
   is_started: boolean;
+};
+
+export type LobbyInfo = {
+  lobby_id: string;
+  lobby_name: string;
+  participants: {
+    id: string;
+    username: string;
+    name: string;
+  }[];
+  is_started: boolean;
+  is_admin: boolean;
 };

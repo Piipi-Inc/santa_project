@@ -1,9 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestHeaders } from 'axios';
-import { mocks } from './mocks';
-import * as T from './types/types';
+import axios, { AxiosInstance, AxiosRequestHeaders } from "axios";
+import { mocks } from "./mocks";
+import * as T from "./types/types";
 
 export class ApiService {
-  private readonly isMockBackendEnabled = import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === 'on';
+  private readonly isMockBackendEnabled =
+    import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === "on";
 
   private readonly axiosInstance: AxiosInstance;
 
@@ -15,8 +16,8 @@ export class ApiService {
 
   constructor() {
     this.headers = {
-      'Content-Type': 'application/json',
-      accept: 'application/json',
+      "Content-Type": "application/json",
+      accept: "application/json",
     };
     this.axiosInstance = axios.create({
       headers: this.headers,
@@ -94,22 +95,32 @@ export class ApiService {
       .then((res) => res.data);
   };
 
-  public createLobby = async ({ lobby_name }: T.CreateLobbyPayload) => {
+  public createLobby = async ({
+    lobby_name,
+  }: T.CreateLobbyPayload): Promise<T.CreateLobbyResponse> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.newLobby);
     }
 
-    return this.axiosInstance.post(`${this.apiUrl}/user/lobbies`, {
-      lobby_name,
-    });
+    return this.axiosInstance
+      .post(`${this.apiUrl}/user/lobbies`, {
+        lobby_name,
+      })
+      .then((res) => res.data);
   };
 
-  public getLobby = async ({ lobby_id }: { lobby_id: string }) => {
+  public getLobby = async ({
+    lobby_id,
+  }: {
+    lobby_id: string;
+  }): Promise<T.LobbyInfo> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.lobby);
     }
 
-    return this.axiosInstance.get(`${this.apiUrl}/lobby/${lobby_id}`);
+    return this.axiosInstance
+      .get(`${this.apiUrl}/lobby/${lobby_id}`)
+      .then((res) => res.data);
   };
 
   public joinLobby = async ({ lobby_id }: T.JoinLobbyPayload) => {

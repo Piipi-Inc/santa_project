@@ -8,11 +8,12 @@ import { LobbyTable } from "./components/LobbyTable";
 
 const Main = observer(() => {
   const {
-    lobbiesStore: { userLobbies, joinLobby },
+    lobbiesStore: { userLobbies, joinLobby, createLobby, goToLobby },
     user: { userInfo },
   } = useStore();
 
   const lobbyCodeRef = useRef("");
+  const lobbyNameRef = useRef("");
 
   const handleJoinLobby = async () => {
     if (lobbyCodeRef.current === "") return;
@@ -20,8 +21,14 @@ const Main = observer(() => {
     await joinLobby({ lobby_id: lobbyCodeRef.current });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCodeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     lobbyCodeRef.current = e.target.value;
+  };
+
+  const handleLobbyNameInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    lobbyNameRef.current = e.target.value;
   };
 
   return (
@@ -41,7 +48,7 @@ const Main = observer(() => {
             placeholder="код"
             maxLength={6}
             className={styles.input}
-            onChange={handleInputChange}
+            onChange={handleCodeInputChange}
             id="password"
           />
         </div>
@@ -50,10 +57,21 @@ const Main = observer(() => {
 
       <div className={styles.lobbies}>
         <h4 className={styles.lobbies__title}>Мои лобби</h4>
-        <div className={styles.buttons__wrap}>
-          <span className={styles.button__label}>Создать лобби</span>
+        <div className={styles.create__wrap}>
+          <span className={styles.create__label}>Создать лобби</span>
+          <span className={styles.create__inputWrap}>
+            <input
+              placeholder="название"
+              maxLength={29}
+              className={styles.create__input}
+              onChange={handleLobbyNameInputChange}
+              id="lobbyName"
+            />
+          </span>
+
+          <span className={styles.create__icon} onClick={createLobby} />
         </div>
-        <LobbyTable userLobbies={userLobbies} />
+        <LobbyTable userLobbies={userLobbies} goToLobby={goToLobby} />
       </div>
     </div>
   );

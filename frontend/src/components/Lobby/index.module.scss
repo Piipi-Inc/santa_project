@@ -1,0 +1,43 @@
+.lobby {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: "JetBrains Mono", serif;
+}
+
+.header {
+  margin-top: 3.6rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.lobby__code {
+  position: relative;
+  color: #913333;
+  font-weight: 800;
+  font-size: 6.3rem;
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0.4rem;
+    background-color: #913333;
+    bottom: 1rem;
+    left: 0;
+  }
+}
+
+.lobby__name {
+  color: #913333;
+  font-weight: 400;
+  font-size: 4.8rem;
+}
+
+.lobby__admin {
+  font-size: 3rem;
+  color: 323030;
+}
