@@ -1,5 +1,6 @@
-import api from 'src/api';
-import * as T from './types/types';
+import api from "src/api";
+import * as T from "./types/types";
+import { LoginPasswordPayload } from "../types/types";
 
 export class User {
   private _isAuthenticated = false;
@@ -7,22 +8,12 @@ export class User {
   private _userInfo?: T.UserInfo;
 
   public init = async () => {
-    try {
-      const userInfo = await api.getUser();
-      this.setUserInfo(userInfo);
-      this.setIsAuthenticated(true);
-    } catch (error) {
-      console.warn(error);
-    }
+    const userInfo = await api.getUser();
+    this.setUserInfo(userInfo);
+    this.setIsAuthenticated(true);
   };
 
-  public login = async ({
-    login,
-    password,
-  }: {
-    login: string;
-    password: string;
-  }) => {
+  public login = async ({ login, password }: LoginPasswordPayload) => {
     await api.login({
       username: login,
       password,

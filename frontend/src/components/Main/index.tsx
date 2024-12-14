@@ -1,18 +1,21 @@
-import React, { useRef } from 'react';
-import cn from 'classnames';
-import { observer } from 'mobx-react-lite';
-import { useStore } from 'src/store';
-import styles from './index.module.scss';
+import React, { useRef } from "react";
+import cn from "classnames";
+import { observer } from "mobx-react-lite";
+import { useStore } from "src/store";
+import styles from "./index.module.scss";
+import { Elf } from "src/shared/components/Elf";
+import { LobbyTable } from "./components/LobbyTable";
 
 const Main = observer(() => {
   const {
     lobbiesStore: { userLobbies, joinLobby },
+    user: { userInfo },
   } = useStore();
 
-  const lobbyCodeRef = useRef('');
+  const lobbyCodeRef = useRef("");
 
   const handleJoinLobby = async () => {
-    if (lobbyCodeRef.current === '') return;
+    if (lobbyCodeRef.current === "") return;
 
     await joinLobby({ lobby_id: lobbyCodeRef.current });
   };
@@ -23,6 +26,11 @@ const Main = observer(() => {
 
   return (
     <div className={styles.main}>
+      {userInfo && (
+        <div className={styles.avatarWrap}>
+          <Elf username={userInfo.username} className={styles.avatar} />
+        </div>
+      )}
       <h3 className={styles.title}>Выбери лобби</h3>
       <div className={styles.inputBlock}>
         <div className={styles.inputWrap}>
@@ -42,25 +50,10 @@ const Main = observer(() => {
 
       <div className={styles.lobbies}>
         <h4 className={styles.lobbies__title}>Мои лобби</h4>
-
-        <div className={styles.lobbies__list}>
-          {userLobbies?.map((lobby) => (
-            <div
-              key={lobby.lobby_code}
-              className={cn(
-                styles.lobby,
-                lobby.is_started && styles.lobby__finished,
-              )}
-            >
-              <span className={styles.lobby__code}>{lobby.lobby_code}</span>
-              <span className={styles.lobby__name}>{lobby.lobby_name}</span>
-              <span className={styles.lobby__participants}>
-                {lobby.is_started && 'игра прошла'}
-                {!lobby.is_started && `${lobby.participants_count} эльфа`}
-              </span>
-            </div>
-          ))}
+        <div className={styles.buttons__wrap}>
+          <span className={styles.button__label}>Создать лобби</span>
         </div>
+        <LobbyTable userLobbies={userLobbies} />
       </div>
     </div>
   );

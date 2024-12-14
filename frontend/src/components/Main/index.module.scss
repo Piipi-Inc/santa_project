@@ -7,6 +7,28 @@
   font-family: "JetBrains Mono", serif;
 }
 
+.avatarWrap {
+  position: absolute;
+  top: 2.5rem;
+  right: 6.2rem;
+  width: 10.6rem;
+  height: 10.5rem;
+  background-image: url('data:image/svg+xml,<svg width="106" height="102" viewBox="0 0 106 102" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 98.5L0 6L106 0.5L96 102L5.5 98.5Z" fill="%23E3C66A"/></svg>');
+  background-position: center;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  width: 6.8rem;
+  height: 8.6rem;
+}
+
 .title {
   color: #913333;
   font-weight: 800;
@@ -98,52 +120,4 @@
   font-size: 5rem;
   font-weight: 500;
   margin: 0;
-}
-
-.lobbies__list {
-  margin-top: 4.5rem;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
-  gap: 3.5rem;
-}
-
-.lobby {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background-image: url('data:image/svg+xml,<svg width="1102" height="77" viewBox="0 0 1102 77" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1040.4 77L1102 0H14.215L0 77H1040.4Z" fill="%23913333"/></svg>');
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: center;
-  color: #fff;
-  padding: 1.5rem 7.1rem 1.4rem 3.7rem;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-}
-
-.lobby__finished {
-  background-image: url('data:image/svg+xml,<svg width="1102" height="77" viewBox="0 0 1102 77" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1040.4 77L1102 0H14.215L0 77H1040.4Z" fill="%23A59E9E"/></svg>');
-}
-
-.lobby__code {
-  font-size: 3.6rem;
-  font-weight: 700;
-  margin-right: 4rem;
-}
-
-.lobby__name {
-  font-size: 3.2rem;
-  font-weight: 200;
-  margin-right: auto;
-}
-
-.lobby__participants {
-  font-size: 3.6rem;
-  font-weight: 700;
 }
