@@ -18,4 +18,5 @@ class SUpdateUserRequest(BaseModel):
 class SUserLobby(BaseModel):
     lobby_code: str
     lobby_name: str
+    participants_count: int
     is_started: bool

@@ -106,6 +106,7 @@ async def get_lobby_info(
             .filter(User.id == Participant.user_id)
             .filter(Lobby.id == Participant.lobby_id)
             .filter(Lobby.id == lobby_id)
+            .order_by(Participant.created_at)
         )
         res = await session.execute(stmt)
         participant_list = [
