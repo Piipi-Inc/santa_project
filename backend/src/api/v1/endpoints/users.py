@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, update
+from sqlalchemy import select, update, func, desc
 
 from src.models.user import User
 from src.models.event import Event
@@ -82,17 +82,39 @@ async def get_user_lobbies(
     :param: session: sqlalchemy session
     :return: list of user`s lobbies
     """
-    stmt = (
-        select(Lobby.id, Lobby.lobby_name, Lobby.is_started)
-        .filter(User.id == current_user.id)
-        .filter(User.id == Participant.user_id)
-        .filter(Lobby.id == Participant.lobby_id)
+    subquery = (
+        select(
+            Lobby.id.label("lobby_id"),
+            Lobby.lobby_name,
+            Lobby.is_started,
+            func.count(Participant.id).label("participants_count"),
+        )
+        .join(Participant, Lobby.id == Participant.lobby_id)
+        .group_by(Lobby.id, Lobby.lobby_name, Lobby.is_started)
+        .subquery()
     )
 
-    res = await session.execute(stmt)
+    query = (
+        select(
+            subquery.c.lobby_id,
+            subquery.c.lobby_name,
+            subquery.c.participants_count,
+            subquery.c.is_started,
+        )
+        .join(Participant, subquery.c.lobby_id == Participant.lobby_id)
+        .where(Participant.user_id == current_user.id)
+        .order_by(desc(Participant.created_at))
+    )
+
+    res = await session.execute(query)
     data = [
-        SUserLobby(lobby_code=code, lobby_name=name, is_started=is_started)
-        for code, name, is_started in res.all()
+        SUserLobby(
+            lobby_code=code,
+            lobby_name=name,
+            participants_count=participants_count,
+            is_started=is_started,
+        )
+        for code, name, participants_count, is_started in res.all()
     ]
 
     return data
