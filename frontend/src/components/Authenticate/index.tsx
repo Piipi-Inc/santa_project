@@ -1,4 +1,3 @@
-import React from "react";
 import { Title } from "src/shared/components/Title";
 import styles from "./index.module.scss";
 import { Speech } from "src/shared/components/Speech";
@@ -9,9 +8,9 @@ import cn from "classnames";
 import { useStore } from "src/store";
 
 const Authenticate = observer(() => {
-  const { handleAuth } = useStore();
+  const { authenticate } = useStore();
   const store = useLocalObservable(
-    () => new AuthenticateScreenStore({ handleAuth })
+    () => new AuthenticateScreenStore({ authenticate })
   );
   const {
     run,

@@ -5,7 +5,7 @@ export class AuthenticateScreenStore {
   private _step: "start" | "login" | "password" = "start";
   private _isLoginValid = false;
   private _isPasswordValid = false;
-  private readonly handleAuth: ({
+  private readonly authenticate: ({
     login,
     password,
   }: {
@@ -16,9 +16,9 @@ export class AuthenticateScreenStore {
   private password = "";
 
   constructor({
-    handleAuth,
+    authenticate,
   }: {
-    handleAuth: ({
+    authenticate: ({
       login,
       password,
     }: {
@@ -26,7 +26,7 @@ export class AuthenticateScreenStore {
       password: string;
     }) => void;
   }) {
-    this.handleAuth = handleAuth;
+    this.authenticate = authenticate;
     makeObservable<
       this,
       | "_step"
@@ -73,7 +73,7 @@ export class AuthenticateScreenStore {
   };
 
   public handleSubmitPassword = () => {
-    this.handleAuth({ login: this.login, password: this.password });
+    this.authenticate({ login: this.login, password: this.password });
   };
 
   private setStep = (step: AuthenticateScreenStore["_step"]) => {
