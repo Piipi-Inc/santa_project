@@ -1,3 +1,4 @@
+import React from "react";
 import { Title } from "src/shared/components/Title";
 import styles from "./index.module.scss";
 import { Speech } from "src/shared/components/Speech";

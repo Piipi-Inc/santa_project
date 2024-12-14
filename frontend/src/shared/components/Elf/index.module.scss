@@ -1,0 +1,27 @@
+.elf {
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+
+    &_1 {
+        background-image: url("./images/elf_1.svg");
+    }
+    &_2 {
+        background-image: url("./images/elf_2.svg");
+    }
+    &_3 {
+        background-image: url("./images/elf_3.svg");
+    }
+    &_4 {
+        background-image: url("./images/elf_4.svg");
+    }
+    &_5 {
+        background-image: url("./images/elf_5.svg");
+    }
+    &_6 {
+        background-image: url("./images/elf_6.svg");
+    }
+    &_7 {
+        background-image: url("./images/elf_7.svg");
+    }
+}

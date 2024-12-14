@@ -84,7 +84,7 @@ export class ApiService {
       return Promise.resolve(mocks.userLobbies);
     }
 
-    return this.axiosInstance.get(`${this.apiUrl}/user/lobbies`);
+    return this.axiosInstance.get(`${this.apiUrl}/user/lobbies`).then(res => res.data);
   };
 
   public createLobby = async ({ lobby_name }: T.CreateLobbyPayload) => {
