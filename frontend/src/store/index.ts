@@ -42,10 +42,16 @@ export class RootStore {
     if (this.auth_scenario === "login") {
       console.log(login, password);
 
-      const isSuccessful = false;
+      let isSuccessful = true;
 
       if (!isSuccessful) await this.screenStore.setScreen(Screens.AUTHENTICATE);
-      // api.login()
+
+      await api.login({
+        'username': login,
+        'password': password
+      })
+      .then(async () => await this.screenStore.setScreen(Screens.MAIN))
+      .catch(async () => await this.screenStore.setScreen(Screens.AUTHENTICATE))
     } else {
       console.log(login, password);
 

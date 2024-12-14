@@ -1,16 +1,12 @@
 import api from "src/api";
 
 export const checkAuth = async () => {
-    let isAuthed = true;
+    let isAuthed = false;
 
     await api.getUser()
-        .then(() => {}
+        .then(() => isAuthed = true
         )
-        .catch((err) => {
-            if (err.status === 401) {
-                isAuthed = false;
-            }
-        })
+        .catch(() => {})
 
     return isAuthed
 }
