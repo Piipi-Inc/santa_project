@@ -1,12 +1,14 @@
-import { action, computed, makeObservable, observable } from "mobx";
-import { UserLobby } from "src/api/types/types";
-import api from "src/api";
+import {
+  action, computed, makeObservable, observable,
+} from 'mobx';
+import { UserLobby } from 'src/api/types/types';
+import api from 'src/api';
 
 export class LobbiesStore {
   private _userLobbies: UserLobby[] | null = null;
 
   constructor() {
-    makeObservable<this, "_userLobbies">(this, {
+    makeObservable<this, '_userLobbies'>(this, {
       _userLobbies: observable,
       setUserLobbies: action,
       userLobbies: computed,
@@ -27,7 +29,7 @@ export class LobbiesStore {
     this.setUserLobbies(userLobbies);
   };
 
-  public setUserLobbies = (userLobbies: LobbiesStore["_userLobbies"]) => {
+  public setUserLobbies = (userLobbies: LobbiesStore['_userLobbies']) => {
     this._userLobbies = userLobbies;
   };
 

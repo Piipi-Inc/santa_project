@@ -1,19 +1,18 @@
-import React from 'react';
-import cn from "classnames";
-import styles from "./index.module.scss";
-import { observer } from "mobx-react-lite";
-import { useStore } from "src/store";
-import { useRef } from "react";
+import React, { useRef } from 'react';
+import cn from 'classnames';
+import { observer } from 'mobx-react-lite';
+import { useStore } from 'src/store';
+import styles from './index.module.scss';
 
 const Main = observer(() => {
   const {
     lobbiesStore: { userLobbies, joinLobby },
   } = useStore();
 
-  const lobbyCodeRef = useRef("");
+  const lobbyCodeRef = useRef('');
 
   const handleJoinLobby = async () => {
-    if (lobbyCodeRef.current === "") return;
+    if (lobbyCodeRef.current === '') return;
 
     await joinLobby({ lobby_id: lobbyCodeRef.current });
   };
@@ -38,7 +37,7 @@ const Main = observer(() => {
             id="password"
           />
         </div>
-        <button className={styles.button} onClick={handleJoinLobby}></button>
+        <button className={styles.button} onClick={handleJoinLobby} />
       </div>
 
       <div className={styles.lobbies}>
@@ -50,13 +49,13 @@ const Main = observer(() => {
               key={lobby.lobby_code}
               className={cn(
                 styles.lobby,
-                lobby.is_started && styles.lobby__finished
+                lobby.is_started && styles.lobby__finished,
               )}
             >
               <span className={styles.lobby__code}>{lobby.lobby_code}</span>
               <span className={styles.lobby__name}>{lobby.lobby_name}</span>
               <span className={styles.lobby__participants}>
-                {lobby.is_started && "игра прошла"}
+                {lobby.is_started && 'игра прошла'}
                 {!lobby.is_started && `${lobby.participants_count} эльфа`}
               </span>
             </div>

@@ -1,13 +1,16 @@
-import { action, computed, makeObservable, observable } from "mobx";
-import * as E from "./types/enums";
-import { wait } from "../../shared/utils/wait";
+import {
+  action, computed, makeObservable, observable,
+} from 'mobx';
+import * as E from './types/enums';
+import { wait } from '../../shared/utils/wait';
 
 export class ScreenStore {
   private _currentScreen: E.Screens = E.Screens.LOADER;
+
   private _isSwitching = false;
 
   constructor() {
-    makeObservable<this, "_currentScreen" | "_isSwitching">(this, {
+    makeObservable<this, '_currentScreen' | '_isSwitching'>(this, {
       _currentScreen: observable,
       setScreen: action,
       currentScreen: computed,
@@ -18,7 +21,7 @@ export class ScreenStore {
     });
   }
 
-  public setScreen = async (screen: ScreenStore["_currentScreen"]) => {
+  public setScreen = async (screen: ScreenStore['_currentScreen']) => {
     this.setIsSwitching(true);
     await wait(500);
     this._currentScreen = screen;
@@ -31,7 +34,7 @@ export class ScreenStore {
     return this._currentScreen;
   }
 
-  public setIsSwitching = (value: ScreenStore["_isSwitching"]) => {
+  public setIsSwitching = (value: ScreenStore['_isSwitching']) => {
     this._isSwitching = value;
   };
 

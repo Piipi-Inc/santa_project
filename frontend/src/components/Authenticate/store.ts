@@ -1,40 +1,39 @@
-import { action, computed, makeObservable, observable } from "mobx";
-import { wait } from "src/shared/utils/wait";
+import {
+  action, computed, makeObservable, observable,
+} from 'mobx';
+import { wait } from 'src/shared/utils/wait';
+import { LoginPasswordPayload } from 'src/store/types/types';
 
 export class AuthenticateScreenStore {
-  private _step: "start" | "login" | "password" = "start";
+  private _step: 'start' | 'login' | 'password' = 'start';
+
   private _isLoginValid = false;
+
   private _isPasswordValid = false;
+
   private readonly authenticate: ({
     login,
     password,
-  }: {
-    login: string;
-    password: string;
-  }) => void;
-  private login = "";
-  private password = "";
+  }: LoginPasswordPayload) => void;
+
+  private login = '';
+
+  private password = '';
 
   constructor({
     authenticate,
   }: {
-    authenticate: ({
-      login,
-      password,
-    }: {
-      login: string;
-      password: string;
-    }) => void;
+    authenticate: ({ login, password }: LoginPasswordPayload) => void;
   }) {
     this.authenticate = authenticate;
     makeObservable<
       this,
-      | "_step"
-      | "setStep"
-      | "_isLoginValid"
-      | "setIsLoginValid"
-      | "_isPasswordValid"
-      | "setIsPasswordValid"
+      | '_step'
+      | 'setStep'
+      | '_isLoginValid'
+      | 'setIsLoginValid'
+      | '_isPasswordValid'
+      | 'setIsPasswordValid'
     >(this, {
       _step: observable,
       setStep: action,
@@ -52,7 +51,7 @@ export class AuthenticateScreenStore {
 
   public run = async () => {
     await wait(300);
-    this.setStep("login");
+    this.setStep('login');
   };
 
   public handleLoginInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,14 +68,14 @@ export class AuthenticateScreenStore {
 
   public handleSubmitLogin = () => {
     this.setIsLoginValid(false);
-    this.setStep("password");
+    this.setStep('password');
   };
 
   public handleSubmitPassword = () => {
     this.authenticate({ login: this.login, password: this.password });
   };
 
-  private setStep = (step: AuthenticateScreenStore["_step"]) => {
+  private setStep = (step: AuthenticateScreenStore['_step']) => {
     this._step = step;
   };
 

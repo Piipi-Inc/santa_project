@@ -1,9 +1,9 @@
-import { useLayoutEffect } from "react";
-import { setupFontSize } from "./shared/libs/setupFontSize";
-import { ScreenSwitch } from "./components/ScreenSwitch";
-import { useStore } from "./store";
+import { useLayoutEffect } from 'react';
+import { setupFontSize } from './shared/libs/setupFontSize';
+import { ScreenSwitch } from './components/ScreenSwitch';
+import { useStore } from './store';
 
-export const App = () => {
+export function App() {
   const store = useStore();
 
   useLayoutEffect(() => {
@@ -16,10 +16,10 @@ export const App = () => {
     setupUi();
     store.init();
 
-    window.addEventListener("resize", setupUi);
+    window.addEventListener('resize', setupUi);
 
     return () => {
-      window.removeEventListener("resize", setupUi);
+      window.removeEventListener('resize', setupUi);
     };
   });
 
@@ -28,4 +28,4 @@ export const App = () => {
       <ScreenSwitch />
     </div>
   );
-};
+}

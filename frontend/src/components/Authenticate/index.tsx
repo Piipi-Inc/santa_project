@@ -1,16 +1,16 @@
-import { Title } from "src/shared/components/Title";
-import styles from "./index.module.scss";
-import { Speech } from "src/shared/components/Speech";
-import { useEffect } from "react";
-import { observer, useLocalObservable } from "mobx-react-lite";
-import { AuthenticateScreenStore } from "./store";
-import cn from "classnames";
-import { useStore } from "src/store";
+import { Title } from 'src/shared/components/Title';
+import { Speech } from 'src/shared/components/Speech';
+import { useEffect } from 'react';
+import { observer, useLocalObservable } from 'mobx-react-lite';
+import cn from 'classnames';
+import { useStore } from 'src/store';
+import { AuthenticateScreenStore } from './store';
+import styles from './index.module.scss';
 
 const Authenticate = observer(() => {
   const { authenticate } = useStore();
   const store = useLocalObservable(
-    () => new AuthenticateScreenStore({ authenticate })
+    () => new AuthenticateScreenStore({ authenticate }),
   );
   const {
     run,
@@ -40,7 +40,7 @@ const Authenticate = observer(() => {
         className={cn(
           styles.inputBlock,
           styles.inputBlock__login,
-          styles[`inputBlock__login-${step}`]
+          styles[`inputBlock__login-${step}`],
         )}
       >
         <div className={styles.inputWrap}>
@@ -57,13 +57,13 @@ const Authenticate = observer(() => {
         <button
           onClick={handleSubmitLogin}
           className={cn(styles.button, isLoginValid && styles.button_active)}
-        ></button>
+        />
       </div>
       <div
         className={cn(
           styles.inputBlock,
           styles.inputBlock__password,
-          styles[`inputBlock__password-${step}`]
+          styles[`inputBlock__password-${step}`],
         )}
       >
         <div className={styles.inputWrap}>

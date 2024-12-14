@@ -1,14 +1,14 @@
-import styles from "./index.module.scss";
-import { Title } from "src/shared/components/Title";
-import { Speech } from "src/shared/components/Speech";
-import { useStore } from "src/store";
+import { Title } from 'src/shared/components/Title';
+import { Speech } from 'src/shared/components/Speech';
+import { useStore } from 'src/store';
+import styles from './index.module.scss';
 
-const Welcome = () => {
+function Welcome() {
   const { handleWelcomeScenario } = useStore();
 
   const buttons = [
-    { text: "да", callback: () => handleWelcomeScenario("login") },
-    { text: "нет", callback: () => handleWelcomeScenario("register") },
+    { text: 'да', callback: () => handleWelcomeScenario('login') },
+    { text: 'нет', callback: () => handleWelcomeScenario('register') },
   ];
 
   return (
@@ -33,6 +33,6 @@ const Welcome = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Welcome;

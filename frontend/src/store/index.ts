@@ -1,16 +1,19 @@
-import { Context, createContext, useContext } from "react";
-import { ScreenStore } from "./screen";
-import { Screens } from "./screen/types/enums";
-import { wait } from "src/shared/utils/wait";
-import { LobbiesStore } from "./Lobbies";
-import { User } from "./User";
-import * as T from "./types/types";
+import { Context, createContext, useContext } from 'react';
+import { wait } from 'src/shared/utils/wait';
+import { ScreenStore } from './screen';
+import { Screens } from './screen/types/enums';
+import { LobbiesStore } from './Lobbies';
+import { User } from './User';
+import * as T from './types/types';
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
+
   public readonly lobbiesStore: LobbiesStore;
+
   public readonly user: User;
-  public auth_scenario: "login" | "register" = "login";
+
+  public auth_scenario: 'login' | 'register' = 'login';
 
   constructor() {
     this.user = new User();
@@ -36,15 +39,15 @@ export class RootStore {
   };
 
   public handleWelcomeScenario = async (
-    auth_scenario: RootStore["auth_scenario"]
+    auth_scenario: RootStore['auth_scenario'],
   ) => {
     this.auth_scenario = auth_scenario;
     await this.screenStore.setScreen(Screens.AUTHENTICATE);
   };
 
   public authenticate = async ({ login, password }: T.LoginPasswordPayload) => {
-    if (this.auth_scenario === "login") {
-      await this.handleLogin({ login, password });
+    if (this.auth_scenario === 'login') {
+      await this.login({ login, password });
     } else {
       await this.screenStore.setScreen(Screens.LOADER);
       // api.register()
@@ -55,7 +58,7 @@ export class RootStore {
     await this.lobbiesStore.init();
   };
 
-  private handleLogin = async ({ login, password }: T.LoginPasswordPayload) => {
+  private login = async ({ login, password }: T.LoginPasswordPayload) => {
     this.user.login({ login, password });
     await this.lobbiesStore.init();
     await this.screenStore.setScreen(Screens.MAIN);
@@ -63,5 +66,4 @@ export class RootStore {
 }
 
 export const RootStoreContext = createContext<RootStore | null>(null);
-export const useStore = () =>
-  useContext(RootStoreContext as Context<RootStore>);
+export const useStore = () => useContext(RootStoreContext as Context<RootStore>);

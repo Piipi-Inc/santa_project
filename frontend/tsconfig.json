@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "commonjs",
-    "target": "es2020",
+    "target": "es2021",
     "lib": ["ES2020", "dom"],
     "allowJs": false,
     "jsx": "react-jsx",

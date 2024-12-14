@@ -5,10 +5,8 @@ const FRAME = {
 
 const FONT_SIZE = 10;
 
-export const getFontSize = () => {
-  return (
-    Math.floor(
-      ((document.documentElement.clientWidth * FONT_SIZE) / FRAME.width) * 100
-    ) / 100
-  );
-};
+export const getFontSize = () => (
+  Math.floor(
+    ((document.documentElement.clientWidth * FONT_SIZE) / FRAME.width) * 100,
+  ) / 100
+);

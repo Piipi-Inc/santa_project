@@ -1,19 +1,18 @@
-import { useStore } from "src/store";
-import { observer } from "mobx-react-lite";
-import { Screens } from "src/store/screen/types/enums";
-import { lazy } from "react";
-import { useMemo, Suspense } from "react";
-import styles from "./index.module.scss";
-import cn from "classnames";
+import { useStore } from 'src/store';
+import { observer } from 'mobx-react-lite';
+import { Screens } from 'src/store/screen/types/enums';
+import { lazy, Suspense, useMemo } from 'react';
+import cn from 'classnames';
+import styles from './index.module.scss';
 
 const screenMap: Record<
   Screens,
   () => Promise<{ default: React.ComponentType }>
 > = {
-  [Screens.LOADER]: () => import("../Loader"),
-  [Screens.AUTHENTICATE]: () => import("../Authenticate"),
-  [Screens.WELCOME]: () => import("../Welcome"),
-  [Screens.MAIN]: () => import("../Main"),
+  [Screens.LOADER]: () => import('../Loader'),
+  [Screens.AUTHENTICATE]: () => import('../Authenticate'),
+  [Screens.WELCOME]: () => import('../Welcome'),
+  [Screens.MAIN]: () => import('../Main'),
 };
 
 export const ScreenSwitch = observer(() => {
@@ -31,11 +30,11 @@ export const ScreenSwitch = observer(() => {
   }
 
   return (
-    <Suspense fallback={<div></div>}>
+    <Suspense fallback={<div />}>
       <div
         className={cn(
           styles.screenSwitchWrap,
-          isSwitching && styles.screenSwitchWrap__isSwitching
+          isSwitching && styles.screenSwitchWrap__isSwitching,
         )}
       >
         <LazyScreen />

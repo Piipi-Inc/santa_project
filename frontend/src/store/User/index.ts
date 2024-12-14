@@ -1,8 +1,9 @@
-import api from "src/api";
-import * as T from "./types/types";
+import api from 'src/api';
+import * as T from './types/types';
 
 export class User {
   private _isAuthenticated = false;
+
   private _userInfo?: T.UserInfo;
 
   public init = async () => {
@@ -24,7 +25,7 @@ export class User {
   }) => {
     await api.login({
       username: login,
-      password: password,
+      password,
     });
     await this.init();
   };

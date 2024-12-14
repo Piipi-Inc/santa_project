@@ -1,19 +1,22 @@
-import axios, { AxiosInstance, AxiosRequestHeaders } from "axios";
-import { mocks } from "./mocks";
-import * as T from "./types/types";
+import axios, { AxiosInstance, AxiosRequestHeaders } from 'axios';
+import { mocks } from './mocks';
+import * as T from './types/types';
 
 export class ApiService {
-  private readonly isMockBackendEnabled =
-    import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === "on";
+  private readonly isMockBackendEnabled = import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === 'on';
+
   private readonly axiosInstance: AxiosInstance;
+
   private readonly headers: Partial<AxiosRequestHeaders>;
+
   private readonly baseUrl = import.meta.env.VITE_BASE_URL;
+
   private readonly apiUrl = `${this.baseUrl}/api/v1`;
 
   constructor() {
     this.headers = {
-      "Content-Type": "application/json",
-      accept: "application/json",
+      'Content-Type': 'application/json',
+      accept: 'application/json',
     };
     this.axiosInstance = axios.create({
       headers: this.headers,
