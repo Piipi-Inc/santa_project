@@ -76,7 +76,7 @@ export class RootStore {
   public handleRegisterEnd = async () => {
     await this.screenStore.setScreen(Screens.LOADER);
     await wait(1000);
-    await this.screenStore.setScreen(Screens.MAIN);
+    await this.screenStore.setScreen(Screens.STORY_TELLING);
   };
 
   private handleAuthenticated = async () => {
@@ -86,7 +86,11 @@ export class RootStore {
   private login = async ({ login, password }: T.LoginPasswordPayload) => {
     await this.user.login({ login, password });
     await this.lobbiesStore.init();
-    await this.screenStore.setScreen(Screens.MAIN);
+    this.user.hasSeenStoryTelling
+      ? await this.screenStore.setScreen(Screens.MAIN)
+      : await this.screenStore.setScreen(Screens.STORY_TELLING);
+
+    return;
   };
 
   private register = async ({
