@@ -12,12 +12,19 @@ const Preferences = observer(() => {
     user: {
       saveUserPreferences,
       userInfo: { username },
+      saveStoryTellingCompleted,
     },
+
     screenStore: { setScreen },
   } = useStore();
 
   const store = useLocalObservable(
-    () => new PreferencesStore({ saveUserPreferences, setScreen })
+    () =>
+      new PreferencesStore({
+        saveUserPreferences,
+        setScreen,
+        saveProgress: saveStoryTellingCompleted,
+      })
   );
 
   const preferencesRef = useRef("");

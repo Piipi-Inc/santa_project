@@ -5,9 +5,7 @@ export class StoryTellingStore {
   public step: "start" | "santa" | "elf" | "finish" = "start";
   private readonly saveProgress: () => Promise<void>;
 
-  constructor({ saveProgress }: { saveProgress: () => Promise<void> }) {
-    this.saveProgress = saveProgress;
-
+  constructor() {
     makeObservable<this, "setStep">(this, {
       step: observable,
       setStep: action,
@@ -19,7 +17,6 @@ export class StoryTellingStore {
     this.setStep("santa");
     await wait(2000);
     this.setStep("elf");
-    await this.saveProgress();
     await wait(2000);
     this.setStep("finish");
   };

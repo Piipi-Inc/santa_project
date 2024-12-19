@@ -11,10 +11,12 @@ export class PreferencesStore {
   }) => Promise<void>;
   public isRunningAnimation = false;
   private readonly setScreen: ScreenStore["setScreen"];
+  private readonly saveProgress: () => Promise<void>;
 
   constructor({
     saveUserPreferences,
     setScreen,
+    saveProgress,
   }: {
     saveUserPreferences: ({
       preferences,
@@ -22,7 +24,9 @@ export class PreferencesStore {
       preferences: string;
     }) => Promise<void>;
     setScreen: ScreenStore["setScreen"];
+    saveProgress: () => Promise<void>;
   }) {
+    this.saveProgress = saveProgress;
     this.saveUserPreferences = saveUserPreferences;
     this.setScreen = setScreen;
 
@@ -41,6 +45,7 @@ export class PreferencesStore {
     this.setIsRunningAnimation(true);
     await wait(2000);
     await savePromise;
+    await this.saveProgress();
     await this.setScreen(Screens.LOADER);
     await wait(1000);
     await this.setScreen(Screens.MAIN);

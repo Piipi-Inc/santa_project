@@ -13,14 +13,11 @@ const StoryTelling = observer(() => {
   const {
     screenStore: { setScreen },
     user: {
-      saveStoryTellingCompleted,
       userInfo: { username },
     },
   } = useStore();
 
-  const store = useLocalObservable(
-    () => new StoryTellingStore({ saveProgress: saveStoryTellingCompleted })
-  );
+  const store = useLocalObservable(() => new StoryTellingStore());
 
   const handleButtonClick = () => {
     setScreen(Screens.PREFERENCES);
