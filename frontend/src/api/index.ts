@@ -103,7 +103,7 @@ export class ApiService {
     }
 
     return this.axiosInstance
-      .post(`${this.apiUrl}/user/lobbies`, {
+      .post(`${this.apiUrl}/lobby`, {
         lobby_name,
       })
       .then((res) => res.data);

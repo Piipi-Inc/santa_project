@@ -7,18 +7,19 @@ export const LobbyTable = ({
   goToLobby,
 }: {
   userLobbies: UserLobby[];
-  goToLobby: () => Promise<void>;
+  goToLobby: ({ lobbyId }: { lobbyId: string; }) => Promise<void>
 }) => {
   return (
     <div className={styles.lobbies__list}>
-      {userLobbies?.map((lobby) => (
-        <div
+      {userLobbies?.map((lobby) => {
+        const handleGoToLobby = () => goToLobby({lobbyId: lobby.lobby_code})
+        return ( <div
           key={lobby.lobby_code}
           className={cn(
             styles.lobby,
             lobby.is_started && styles.lobby__finished
           )}
-          onClick={goToLobby}
+          onClick={handleGoToLobby}
         >
           <span className={styles.lobby__code}>{lobby.lobby_code}</span>
           <span className={styles.lobby__name}>{lobby.lobby_name}</span>
@@ -27,7 +28,7 @@ export const LobbyTable = ({
             {!lobby.is_started && `${lobby.participants_count} эльфа`}
           </span>
         </div>
-      ))}
+      )})}
     </div>
   );
 };

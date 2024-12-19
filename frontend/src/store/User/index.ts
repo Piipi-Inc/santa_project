@@ -8,9 +8,14 @@ export class User {
   private _userInfo?: T.UserInfo;
 
   public init = async () => {
-    const userInfo = await api.getUser();
-    this.setUserInfo(userInfo);
-    this.setIsAuthenticated(true);
+    try {
+      const userInfo = await api.getUser();
+      this.setUserInfo(userInfo);
+      this.setIsAuthenticated(true);
+    } catch {
+      this.setUserInfo(null);
+      this.setIsAuthenticated(false);
+    }
   };
 
   public login = async ({ login, password }: LoginPasswordPayload) => {

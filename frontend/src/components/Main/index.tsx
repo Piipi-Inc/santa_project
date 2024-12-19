@@ -31,6 +31,12 @@ const Main = observer(() => {
     lobbyNameRef.current = e.target.value;
   };
 
+  const handleCreateLobby = () => {
+    if (!lobbyNameRef.current) return;
+
+    createLobby({lobby_name: lobbyNameRef.current})
+  }
+
   return (
     <div className={styles.main}>
       {userInfo && (
@@ -69,7 +75,7 @@ const Main = observer(() => {
             />
           </span>
 
-          <span className={styles.create__icon} onClick={createLobby} />
+          <span className={styles.create__icon} onClick={handleCreateLobby} />
         </div>
         <LobbyTable userLobbies={userLobbies} goToLobby={goToLobby} />
       </div>

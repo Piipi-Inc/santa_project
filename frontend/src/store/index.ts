@@ -20,7 +20,7 @@ export class RootStore {
 
   public init = async () => {
     try {
-      await Promise.all([this.user.init, wait(2000)]);
+      await Promise.all([this.user.init(), wait(2000)]);
 
       if (this.user.isAuthenticated) {
         await this.handleAuthenticated();
@@ -45,9 +45,17 @@ export class RootStore {
   public authenticate = async ({ login, password }: T.LoginPasswordPayload) => {
     if (this.auth_scenario === "login") {
       await this.login({ login, password });
+
     } else {
+
+      // await api.register({
+      //   login,
+      //   name,
+      //   preferences,
+      //   password
+      // })
+
       await this.screenStore.setScreen(Screens.LOADER);
-      // api.register()
     }
   };
 
@@ -56,7 +64,7 @@ export class RootStore {
   };
 
   private login = async ({ login, password }: T.LoginPasswordPayload) => {
-    this.user.login({ login, password });
+    await this.user.login({ login, password });
     await this.lobbiesStore.init();
     await this.screenStore.setScreen(Screens.MAIN);
   };

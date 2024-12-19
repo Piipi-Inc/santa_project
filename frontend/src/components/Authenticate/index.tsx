@@ -21,6 +21,8 @@ const Authenticate = observer(() => {
     isPasswordValid,
     handlePasswordInput,
     handleSubmitPassword,
+    handleInputClick,
+    isLoginFailed
   } = store;
 
   useEffect(() => {
@@ -30,11 +32,12 @@ const Authenticate = observer(() => {
   return (
     <div className={styles.authenticate}>
       <Title className={styles.title} />
-      <div className={styles.image} />
+
+      <div className={cn(styles.image, isLoginFailed && styles.image_failedLogin)} />
       <Speech
-        className={styles.speech}
-        textClassName={styles.speechText}
-        text="и кто же ты?"
+        className={cn(styles.speech, isLoginFailed && styles.speech_failedLogin)}
+        textClassName={cn(styles.speechText, isLoginFailed && styles.speechText_failedLogin)}
+        text={isLoginFailed ? "я такого не знаю!" : "и кто же ты?"}
       />
       <div
         className={cn(
@@ -48,6 +51,7 @@ const Authenticate = observer(() => {
             Логин:
           </label>
           <input
+            onClick={() => handleInputClick('login')}
             onChange={handleLoginInput}
             maxLength={13}
             className={styles.input}

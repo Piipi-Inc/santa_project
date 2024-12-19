@@ -11,10 +11,12 @@ export class AuthenticateScreenStore {
 
   private _isPasswordValid = false;
 
+  private _isLoginFailed = false;
+
   private readonly authenticate: ({
     login,
     password,
-  }: LoginPasswordPayload) => void;
+  }: LoginPasswordPayload) => Promise<void>;
 
   private login = '';
 
@@ -23,7 +25,7 @@ export class AuthenticateScreenStore {
   constructor({
     authenticate,
   }: {
-    authenticate: ({ login, password }: LoginPasswordPayload) => void;
+    authenticate: ({ login, password }: LoginPasswordPayload) => Promise<void>;
   }) {
     this.authenticate = authenticate;
     makeObservable<
@@ -34,6 +36,7 @@ export class AuthenticateScreenStore {
       | 'setIsLoginValid'
       | '_isPasswordValid'
       | 'setIsPasswordValid'
+      | '_isLoginFailed'
     >(this, {
       _step: observable,
       setStep: action,
@@ -46,6 +49,10 @@ export class AuthenticateScreenStore {
       _isPasswordValid: observable,
       setIsPasswordValid: action,
       isPasswordValid: computed,
+
+      _isLoginFailed: observable,
+      setIsLoginFailed: action,
+      isLoginFailed: computed,
     });
   }
 
@@ -58,6 +65,7 @@ export class AuthenticateScreenStore {
     const isNotEmpty = e.target.value.length > 0;
     this.login = e.target.value;
     this.setIsLoginValid(isNotEmpty);
+    this.setIsLoginFailed(false);
   };
 
   public handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,13 +75,30 @@ export class AuthenticateScreenStore {
   };
 
   public handleSubmitLogin = () => {
+    if (!this.login) return
     this.setIsLoginValid(false);
     this.setStep('password');
+    this.setIsLoginFailed(false);
   };
 
-  public handleSubmitPassword = () => {
-    this.authenticate({ login: this.login, password: this.password });
+  public handleSubmitPassword = async () => {
+    try {
+      await this.authenticate({ login: this.login, password: this.password });
+    } catch (error) {
+      if (error.status === 404) {
+        this.setIsLoginFailed(true);
+        this.setStep('login')
+      }
+    }
+
   };
+
+  public handleInputClick = (input: "login") => {
+    if (this.step === "password") {
+      this.setStep('login')
+      this.setIsLoginValid(true);
+    }
+  }
 
   private setStep = (step: AuthenticateScreenStore['_step']) => {
     this._step = step;
@@ -97,5 +122,13 @@ export class AuthenticateScreenStore {
 
   public get isPasswordValid() {
     return this._isPasswordValid;
+  }
+
+  public setIsLoginFailed = (value: boolean) => {
+    this._isLoginFailed = value;
+  }
+
+  public get isLoginFailed() {
+    return this._isLoginFailed;
   }
 }
