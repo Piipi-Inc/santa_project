@@ -6,11 +6,12 @@ import cn from 'classnames';
 import { useStore } from 'src/store';
 import { AuthenticateScreenStore } from './store';
 import styles from './index.module.scss';
+import BackButton from 'src/shared/components/BackButton';
 
 const Authenticate = observer(() => {
-  const { authenticate } = useStore();
+  const { authenticate, goBack, auth_scenario, handleRegisterEnd } = useStore();
   const store = useLocalObservable(
-    () => new AuthenticateScreenStore({ authenticate }),
+    () => new AuthenticateScreenStore({ authenticate, auth_scenario, handleRegisterEnd }),
   );
   const {
     run,
@@ -21,8 +22,11 @@ const Authenticate = observer(() => {
     isPasswordValid,
     handlePasswordInput,
     handleSubmitPassword,
+    isNameValid,
+    handleNameInput,
+    handleSubmitName,
     handleInputClick,
-    isLoginFailed
+    isLoginFailed,
   } = store;
 
   useEffect(() => {
@@ -31,13 +35,36 @@ const Authenticate = observer(() => {
 
   return (
     <div className={styles.authenticate}>
+      <BackButton className={styles.backBtn} onClick={goBack} />
       <Title className={styles.title} />
 
-      <div className={cn(styles.image, isLoginFailed && styles.image_failedLogin)} />
+      <div className={cn(
+        styles.image,
+        isLoginFailed && styles.image_failedLogin,
+        step === 'finish' && styles.image_finish
+      )} />
       <Speech
-        className={cn(styles.speech, isLoginFailed && styles.speech_failedLogin)}
-        textClassName={cn(styles.speechText, isLoginFailed && styles.speechText_failedLogin)}
-        text={isLoginFailed ? "я такого не знаю!" : "и кто же ты?"}
+        className={cn(
+          styles.speech,
+          isLoginFailed && styles.speech_failedLogin,
+          step === 'name' && styles.speech_name,
+          step === 'finish' && styles.speech_finish
+        )}
+        textClassName={cn(
+          styles.speechText,
+          isLoginFailed && styles.speechText_failedLogin,
+          step === 'name' && styles.speechText_name,
+          step === 'finish' && styles.speechText_finish,
+        )}
+        text={
+          isLoginFailed
+          ? "я такого не знаю!"
+          : step === 'name'
+          ? "а зовут то тебя как?"
+          : step === 'finish'
+          ? "оk, я тебя запомню."
+          : "и кто же ты?"
+        }
       />
       <div
         className={cn(
@@ -84,6 +111,30 @@ const Authenticate = observer(() => {
         <button
           onClick={handleSubmitPassword}
           className={cn(styles.button, isPasswordValid && styles.button_active)}
+        />
+      </div>
+
+      <div
+        className={cn(
+          styles.inputBlock,
+          styles.inputBlock__name,
+          styles[`inputBlock__name-${step}`],
+        )}
+      >
+        <div className={styles.inputWrap}>
+          <label className={styles.label} htmlFor="name">
+            Имя:
+          </label>
+          <input
+            onChange={handleNameInput}
+            maxLength={13}
+            className={styles.input}
+            id="name"
+          />
+        </div>
+        <button
+          onClick={handleSubmitName}
+          className={cn(styles.button, isNameValid && styles.button_active)}
         />
       </div>
     </div>

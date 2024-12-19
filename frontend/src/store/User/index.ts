@@ -26,6 +26,16 @@ export class User {
     await this.init();
   };
 
+  public register = async ({ login, password, name }: LoginPasswordPayload) => {
+    await api.register({
+      username: login,
+      name: name,
+      preferences: null,
+      password: password
+    });
+    await this.init();
+  };
+
   public get userInfo() {
     return this._userInfo;
   }

@@ -5,11 +5,15 @@ import { wait } from 'src/shared/utils/wait';
 import { LoginPasswordPayload } from 'src/store/types/types';
 
 export class AuthenticateScreenStore {
-  private _step: 'start' | 'login' | 'password' = 'start';
+  private _step: 'start' | 'login' | 'password' | 'name' | 'finish' = 'start';
+
+  private _auth_scenario: 'login' | 'register';
 
   private _isLoginValid = false;
 
   private _isPasswordValid = false;
+
+  private _isNameValid = false;
 
   private _isLoginFailed = false;
 
@@ -18,16 +22,26 @@ export class AuthenticateScreenStore {
     password,
   }: LoginPasswordPayload) => Promise<void>;
 
+  private readonly handleRegisterEnd: () => Promise<void>
+
   private login = '';
 
   private password = '';
 
+  private name = '';
+
   constructor({
     authenticate,
+    auth_scenario,
+    handleRegisterEnd
   }: {
-    authenticate: ({ login, password }: LoginPasswordPayload) => Promise<void>;
+    authenticate: ({ login, password }: LoginPasswordPayload) => Promise<void>,
+    auth_scenario: 'login' | 'register',
+    handleRegisterEnd: () => Promise<void>;
   }) {
     this.authenticate = authenticate;
+    this._auth_scenario = auth_scenario;
+    this.handleRegisterEnd = handleRegisterEnd;
     makeObservable<
       this,
       | '_step'
@@ -36,6 +50,8 @@ export class AuthenticateScreenStore {
       | 'setIsLoginValid'
       | '_isPasswordValid'
       | 'setIsPasswordValid'
+      | '_isNameValid'
+      | 'setIsNameValid'
       | '_isLoginFailed'
     >(this, {
       _step: observable,
@@ -49,6 +65,10 @@ export class AuthenticateScreenStore {
       _isPasswordValid: observable,
       setIsPasswordValid: action,
       isPasswordValid: computed,
+
+      _isNameValid: observable,
+      setIsNameValid: action,
+      isNameValid: computed,
 
       _isLoginFailed: observable,
       setIsLoginFailed: action,
@@ -74,6 +94,12 @@ export class AuthenticateScreenStore {
     this.setIsPasswordValid(isNotEmpty);
   };
 
+  public handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isNotEmpty = e.target.value.length > 0;
+    this.name = e.target.value;
+    this.setIsNameValid(isNotEmpty);
+  };
+
   public handleSubmitLogin = () => {
     if (!this.login) return
     this.setIsLoginValid(false);
@@ -82,15 +108,29 @@ export class AuthenticateScreenStore {
   };
 
   public handleSubmitPassword = async () => {
-    try {
-      await this.authenticate({ login: this.login, password: this.password });
-    } catch (error) {
-      if (error.status === 404) {
-        this.setIsLoginFailed(true);
-        this.setStep('login')
+    if (this._auth_scenario === 'login') {
+      try {
+        await this.authenticate({ login: this.login, password: this.password });
+      } catch (error) {
+        if (error.status === 404) {
+          this.setIsLoginFailed(true);
+          this.setStep('login')
+        }
       }
+    } else {
+      this.setStep('name')
     }
+  };
 
+  public handleSubmitName = async () => {
+    try {
+      await this.authenticate({ login: this.login, password: this.password, name: this.name });
+      this.setStep('finish');
+      await wait(2000);
+      await this.handleRegisterEnd()
+    } catch (error) {
+      this.setStep('login');
+    }
   };
 
   public handleInputClick = (input: "login") => {
@@ -116,12 +156,20 @@ export class AuthenticateScreenStore {
     this._isPasswordValid = value;
   };
 
+  private setIsNameValid = (value: boolean) => {
+    this._isNameValid = value;
+  };
+
   public get isLoginValid() {
     return this._isLoginValid;
   }
 
   public get isPasswordValid() {
     return this._isPasswordValid;
+  }
+
+  public get isNameValid() {
+    return this._isNameValid;
   }
 
   public setIsLoginFailed = (value: boolean) => {
