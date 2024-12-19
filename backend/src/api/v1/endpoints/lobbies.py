@@ -89,11 +89,14 @@ async def get_lobby_info(
     """
     stmt = (
         select(
-            Lobby.id, Lobby.lobby_name, Lobby.is_started, Participant.is_admin
+            Lobby.id,
+            Lobby.lobby_name,
+            Lobby.is_started,
+            User.username.label("admin_username"),
         )
-        .filter(User.id == current_user.id)
-        .filter(User.id == Participant.user_id)
-        .filter(Lobby.id == Participant.lobby_id)
+        .join(Participant, Lobby.id == Participant.lobby_id)
+        .join(User, Participant.user_id == User.id)
+        .filter(Participant.is_admin)
         .filter(Lobby.id == lobby_id)
     )
     res = await session.execute(stmt)
@@ -119,7 +122,7 @@ async def get_lobby_info(
             lobby_name=res_lobby[0][1],
             participants=participant_list,
             is_started=res_lobby[0][2],
-            is_admin=res_lobby[0][3],
+            admin_username=res_lobby[0][3],
         )
 
     else:

@@ -1,13 +1,17 @@
+import { useState } from "react";
 import styles from "./index.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "src/store";
 import { Participant } from "./components/Participant";
 import { LobbyButton } from "./components/LobbyButton";
+import BackButton from "src/shared/components/BackButton";
+import Letter from "./components/Letter";
 
 const Lobby = observer(() => {
   const {
     lobbiesStore: { currentLobby },
     user: { userInfo },
+    goBack,
   } = useStore();
 
   if (!currentLobby || !userInfo) return;
@@ -16,8 +20,11 @@ const Lobby = observer(() => {
   const isAdmin = admin_username === userInfo.username;
   const creatorUsername = isAdmin ? "вы" : `@${admin_username}`;
 
+  const [isLetterVisible, setIsLetterVisible] = useState(false);
+
   return (
     <div className={styles.lobby}>
+      <BackButton className={styles.backBtn} onClick={goBack} />
       <div className={styles.header}>
         <span className={styles.lobby__code}>{lobby_id}</span>
         <span className={styles.lobby__name}>{lobby_name}</span>
@@ -25,7 +32,9 @@ const Lobby = observer(() => {
           создатель: {creatorUsername}
         </span>
       </div>
-      <div className={styles.letter} />
+      {currentLobby.is_started && <div className={styles.letter} onClick={() => setIsLetterVisible(true)} />}
+      {/* <div className={styles.letter} onClick={() => setIsLetterVisible(true)} /> */}
+      {isLetterVisible && <Letter setIsLetterVisible={setIsLetterVisible} />}
       <LobbyButton
         className={styles.button}
         isAdmin={isAdmin}

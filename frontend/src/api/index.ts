@@ -139,12 +139,12 @@ export class ApiService {
     return this.axiosInstance.post(`${this.apiUrl}/lobby/${lobby_id}/start`);
   };
 
-  public getGift = async ({ lobby_id }: { lobby_id: string }) => {
+  public getGift = async ({ lobby_id }: { lobby_id: string }): Promise<T.LobbyGift> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.getGiftResponse);
     }
 
-    return this.axiosInstance.post(`${this.apiUrl}/lobby/${lobby_id}/gift`);
+    return this.axiosInstance.get(`${this.apiUrl}/lobby/${lobby_id}/gift`).then(res => res.data);
   };
 
   public saveEvent = async ({ event_name }: { event_name: string }) => {

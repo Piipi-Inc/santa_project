@@ -102,12 +102,14 @@ export class AuthenticateScreenStore {
 
   public handleSubmitLogin = () => {
     if (!this.login) return
+    if (!this._isLoginValid) return
     this.setIsLoginValid(false);
     this.setStep('password');
     this.setIsLoginFailed(false);
   };
 
   public handleSubmitPassword = async () => {
+    if (!this._isPasswordValid) return
     if (this._auth_scenario === 'login') {
       try {
         await this.authenticate({ login: this.login, password: this.password });
@@ -123,6 +125,7 @@ export class AuthenticateScreenStore {
   };
 
   public handleSubmitName = async () => {
+    if (!this._isNameValid) return
     try {
       await this.authenticate({ login: this.login, password: this.password, name: this.name });
       this.setStep('finish');

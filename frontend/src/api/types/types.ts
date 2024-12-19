@@ -46,3 +46,9 @@ export type LobbyInfo = {
   is_started: boolean;
   admin_username: string;
 };
+
+export type LobbyGift = {
+  username: string
+  name: string
+  preferences: string | null
+}

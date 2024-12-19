@@ -27,7 +27,7 @@ class SLobbyResponse(BaseModel):
     lobby_name: str
     participants: List[JoinedParticipant]
     is_started: bool
-    is_admin: bool
+    admin_username: str
 
 
 class SGiftResponse(BaseModel):

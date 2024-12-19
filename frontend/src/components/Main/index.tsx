@@ -1,8 +1,5 @@
 import { useRef } from "react";
-<<<<<<< Updated upstream
-=======
 import cn from "classnames";
->>>>>>> Stashed changes
 import { observer } from "mobx-react-lite";
 import { useStore } from "src/store";
 import styles from "./index.module.scss";

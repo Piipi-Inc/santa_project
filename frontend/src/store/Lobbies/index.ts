@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable } from "mobx";
-import { LobbyInfo, UserLobby } from "src/api/types/types";
+import { LobbyInfo, UserLobby, LobbyGift } from "src/api/types/types";
 import api from "src/api";
 import { ScreenStore } from "../screen";
 import { Screens } from "../screen/types/enums";
@@ -9,6 +9,7 @@ export class LobbiesStore {
   private _userLobbies: UserLobby[] | null = null;
   private _screenStore: ScreenStore;
   private _currentLobbyInfo?: LobbyInfo;
+  private _currentLobbyGift?: LobbyGift;
 
   constructor({ screenStore }: { screenStore: ScreenStore }) {
     this._screenStore = screenStore;
@@ -46,6 +47,11 @@ export class LobbiesStore {
     const lobby = await api.getLobby({ lobby_id: lobbyId });
     this._currentLobbyInfo = lobby;
     this._screenStore.setScreen(Screens.LOBBY);
+
+    if (this._currentLobbyInfo.is_started) {
+      const gift = await api.getGift({lobby_id: lobbyId});
+      this._currentLobbyGift = gift;
+    }
   };
 
   public refresh = async () => {
@@ -63,5 +69,9 @@ export class LobbiesStore {
 
   public get currentLobby() {
     return this._currentLobbyInfo;
+  }
+
+  public get currentGift() {
+    return this._currentLobbyGift;
   }
 }
