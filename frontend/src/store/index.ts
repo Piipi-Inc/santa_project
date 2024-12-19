@@ -24,7 +24,11 @@ export class RootStore {
 
       if (this.user.isAuthenticated) {
         await this.handleAuthenticated();
-        await this.screenStore.setScreen(Screens.MAIN);
+
+        this.user.hasSeenStoryTelling
+          ? await this.screenStore.setScreen(Screens.MAIN)
+          : await this.screenStore.setScreen(Screens.STORY_TELLING);
+
         return;
       }
 
@@ -42,17 +46,19 @@ export class RootStore {
     await this.screenStore.setScreen(Screens.AUTHENTICATE);
   };
 
-  public authenticate = async ({ login, password, name }: T.LoginPasswordPayload) => {
+  public authenticate = async ({
+    login,
+    password,
+    name,
+  }: T.LoginPasswordPayload) => {
     if (this.auth_scenario === "login") {
       await this.login({ login, password });
-
     } else {
-
       await this.register({
         login,
         name,
-        password
-      })
+        password,
+      });
     }
   };
 
@@ -63,15 +69,15 @@ export class RootStore {
     }
 
     if (this.screenStore.currentScreen === Screens.LOBBY) {
-      await this.screenStore.setScreen(Screens.MAIN)
+      await this.screenStore.setScreen(Screens.MAIN);
     }
-  }
+  };
 
   public handleRegisterEnd = async () => {
     await this.screenStore.setScreen(Screens.LOADER);
     await wait(1000);
     await this.screenStore.setScreen(Screens.MAIN);
-  }
+  };
 
   private handleAuthenticated = async () => {
     await this.lobbiesStore.init();
@@ -83,7 +89,11 @@ export class RootStore {
     await this.screenStore.setScreen(Screens.MAIN);
   };
 
-  private register = async ({ login, name, password }: T.LoginPasswordPayload) => {
+  private register = async ({
+    login,
+    name,
+    password,
+  }: T.LoginPasswordPayload) => {
     await this.user.register({ login, password, name });
     await this.lobbiesStore.init();
   };

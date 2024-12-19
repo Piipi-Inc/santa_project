@@ -1,0 +1,121 @@
+.storyTelling {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: "JetBrains Mono", serif;
+}
+
+.title {
+  position: absolute;
+  font-size: 5.5rem;
+  top: 5.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bubble {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+
+.text {
+  position: absolute;
+  font-size: 2.7rem;
+  font-weight: 200;
+  color: #fff;
+}
+
+.santaWrap {
+  position: absolute;
+  top: 10rem;
+  left: 18.2rem;
+  transition: opacity 0.6s ease-in-out;
+
+  &_start {
+    opacity: 0;
+  }
+
+  &_santa,
+  &_elf,
+  &_finish {
+    opacity: 1;
+  }
+
+  .bubble {
+    top: 7rem;
+    left: 19rem;
+    width: 31.3rem;
+    height: 14.5rem;
+    background-image: url('data:image/svg+xml,<svg width="313" height="145" viewBox="0 0 313 145" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M313 0L48 13L38 136.777L284.757 145L313 0Z" fill="%23913333"/><path d="M43.7442 69L66 89.9767L0 110L43.7442 69Z" fill="%23913333"/></svg>');
+  }
+
+  .text {
+    top: 1.9rem;
+    left: 8.7rem;
+  }
+}
+
+.elfWrap {
+  position: absolute;
+  top: 36.1rem;
+  right: 12.7rem;
+  transition: opacity 0.6s ease-in-out;
+
+  &_start,
+  &_santa {
+    opacity: 0;
+  }
+
+  &_elf,
+  &_finish {
+    opacity: 1;
+  }
+
+  .bubble {
+    top: -2.9rem;
+    right: 16.7rem;
+    width: 35.3rem;
+    height: 20rem;
+    background-image: url('data:image/svg+xml,<svg width="353" height="200" viewBox="0 0 353 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0H326.358L353 162.607L29.7872 184L0 0Z" fill="%23333B2E"/><path d="M275.446 158L244 162.9L302 200L275.446 158Z" fill="%23333B2E"/></svg>');
+  }
+
+  .text {
+    top: 1.4rem;
+    left: 4.2rem;
+  }
+}
+
+.elf {
+  width: 20.2rem;
+  height: 25.7rem;
+}
+
+.button {
+  position: absolute;
+  left: 50%;
+  bottom: 2.9rem;
+  transform: translateX(-50%);
+  width: 24.2rem;
+  height: 7rem;
+  background-image: url('data:image/svg+xml,<svg width="242" height="70" viewBox="0 0 242 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M31.5 0L242 7.99484L225.5 70H0L31.5 0Z" fill="%233A452F"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.6rem;
+  font-weight: 400;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.button__visible {
+  opacity: 1;
+}

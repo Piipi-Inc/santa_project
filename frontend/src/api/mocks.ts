@@ -10,7 +10,7 @@ export const mocks = {
     username: "puker228",
     name: "Puker",
     preferences: "plus vibes",
-    completed_events: ["storytelling"],
+    completed_events: [],
   },
   userLobbies: [
     {

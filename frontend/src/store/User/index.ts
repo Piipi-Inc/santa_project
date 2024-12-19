@@ -4,7 +4,6 @@ import { LoginPasswordPayload } from "../types/types";
 
 export class User {
   private _isAuthenticated = false;
-
   private _userInfo?: T.UserInfo;
 
   public init = async () => {
@@ -31,9 +30,20 @@ export class User {
       username: login,
       name: name,
       preferences: null,
-      password: password
+      password: password,
     });
     await this.init();
+  };
+
+  public saveStoryTellingCompleted = async () => {
+    if (this.hasSeenStoryTelling) return;
+
+    const completedEvents = [
+      ...this.userInfo.completed_events,
+      "story_telling",
+    ];
+    this.setUserInfo({ ...this.userInfo, completed_events: completedEvents });
+    await api.saveEvent({ event_name: "story_telling" });
   };
 
   public get userInfo() {
@@ -42,6 +52,10 @@ export class User {
 
   public get isAuthenticated() {
     return this._isAuthenticated;
+  }
+
+  public get hasSeenStoryTelling() {
+    return this._userInfo.completed_events.includes("story_telling");
   }
 
   private setIsAuthenticated = (isAuthenticated: boolean) => {

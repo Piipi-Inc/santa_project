@@ -4,4 +4,6 @@ export enum Screens {
   AUTHENTICATE = "authenticate",
   MAIN = "main",
   LOBBY = "lobby",
+  STORY_TELLING = "story_telling",
+  PREFERENCES = "preferences",
 }
