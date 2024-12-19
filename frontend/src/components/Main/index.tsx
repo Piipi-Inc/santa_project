@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import cn from "classnames";
+import { useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "src/store";
 import styles from "./index.module.scss";
@@ -34,8 +33,8 @@ const Main = observer(() => {
   const handleCreateLobby = () => {
     if (!lobbyNameRef.current) return;
 
-    createLobby({lobby_name: lobbyNameRef.current})
-  }
+    createLobby({ lobby_name: lobbyNameRef.current });
+  };
 
   return (
     <div className={styles.main}>

@@ -1,0 +1,36 @@
+.lobbyButton {
+  position: absolute;
+  width: 52.6rem;
+  height: 18.7rem;
+  cursor: pointer;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lobbyButton__isNonAdmin {
+  .background {
+    path {
+      fill: #a59e9e;
+    }
+  }
+
+  .text {
+    font-size: 2.3rem;
+  }
+}
+
+.text {
+  text-align: right;
+  position: absolute;
+  bottom: 2rem;
+  right: 1rem;
+  font-size: 4rem;
+  font-weight: 900;
+  color: #fff;
+}

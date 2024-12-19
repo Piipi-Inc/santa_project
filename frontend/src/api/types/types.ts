@@ -44,5 +44,5 @@ export type LobbyInfo = {
     name: string;
   }[];
   is_started: boolean;
-  is_admin: boolean;
+  admin_username: string;
 };

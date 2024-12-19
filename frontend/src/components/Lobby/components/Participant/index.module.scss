@@ -1,0 +1,38 @@
+.participant {
+  position: relative;
+  width: 51rem;
+  height: 11rem;
+  background-image: url('data:image/svg+xml,<svg width="510" height="77" viewBox="0 0 510 77" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M481.493 77L510 0H6.57861L-3.05176e-05 77H481.493Z" fill="%23913333"/></svg>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+.iconWrap {
+  position: absolute;
+  left: 2.7rem;
+  top: 0;
+  width: 10.6rem;
+  height: 10.1rem;
+  background-image: url('data:image/svg+xml,<svg width="106" height="102" viewBox="0 0 106 102" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 98.5L0 6L106 0.5L96 102L5.5 98.5Z" fill="%23E3C66A"/></svg>');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  width: 6.7rem;
+  height: 8.6rem;
+}
+
+.name {
+  position: absolute;
+  top: 3rem;
+  left: 16rem;
+  color: #fff;
+  font-size: 3.6rem;
+  font-weight: 800;
+}
