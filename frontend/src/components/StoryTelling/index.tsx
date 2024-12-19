@@ -1,12 +1,12 @@
-import { Title } from "src/shared/components/Title";
+import cn from "classnames";
 import styles from "./index.module.scss";
+import Santa from "src/shared/images/santa.svg?react";
+import { Title } from "src/shared/components/Title";
 import { useStore } from "src/store";
 import { Elf } from "src/shared/components/Elf";
-import Santa from "src/shared/images/santa.svg?react";
 import { observer, useLocalObservable } from "mobx-react-lite";
 import { StoryTellingStore } from "./store";
 import { useEffect } from "react";
-import cn from "classnames";
 import { Screens } from "src/store/screen/types/enums";
 
 const StoryTelling = observer(() => {
