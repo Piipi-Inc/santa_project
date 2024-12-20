@@ -6,6 +6,10 @@ import { Title } from "src/shared/components/Title";
 import { observer, useLocalObservable } from "mobx-react-lite";
 import { PreferencesStore } from "./store";
 import { useRef } from "react";
+import mark1 from "./images/mark_1.png";
+import mark2 from "./images/mark_2.png";
+import mark3 from "./images/mark_3.png";
+import mark4 from "./images/mark_4.png";
 
 const Preferences = observer(() => {
   const {
@@ -45,7 +49,12 @@ const Preferences = observer(() => {
     <div className={styles.preferences}>
       <Title className={styles.title} />
       <Elf className={styles.elf} username={username} />
-      <div className={styles.letter}>
+      <div
+        className={cn(
+          styles.letter,
+          store.isRunningAnimation && styles.letter_disappear
+        )}
+      >
         <div
           className={cn(
             styles.letter__content,
@@ -83,6 +92,17 @@ const Preferences = observer(() => {
             store.isRunningAnimation && styles.cover_visible
           )}
         />
+        <div
+          className={cn(
+            styles.marks,
+            store.isRunningAnimation && styles.marks_visible
+          )}
+        >
+          <img className={cn(styles.mark, styles.mark_4)} src={mark4} />
+          <img className={cn(styles.mark, styles.mark_2)} src={mark2} />
+          <img className={cn(styles.mark, styles.mark_3)} src={mark3} />
+          <img className={cn(styles.mark, styles.mark_1)} src={mark1} />
+        </div>
       </div>
 
       <div

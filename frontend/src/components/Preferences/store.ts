@@ -43,7 +43,7 @@ export class PreferencesStore {
   }) => {
     const savePromise = this.saveUserPreferences({ preferences });
     this.setIsRunningAnimation(true);
-    await wait(2000);
+    await wait(7000);
     await savePromise;
     await this.saveProgress();
     await this.setScreen(Screens.LOADER);

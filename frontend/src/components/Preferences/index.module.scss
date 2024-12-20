@@ -32,12 +32,21 @@
   height: 40.1rem;
   background: url('data:image/svg+xml,<svg width="699" height="403" viewBox="0 0 699 403" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M68.5 383.5L1 40.5L641 12.5L687 402L68.5 383.5Z" fill="%23913333" stroke="white"/><path d="M82.5 367.5L12 14.5L653 0.5L699 386L82.5 367.5Z" fill="%23F7ECCB"/></svg>')
     center/100% no-repeat;
+  transform-origin: 0;
 }
 
 .letter__content {
   z-index: 2;
   opacity: 1;
   transition: opacity 0.5s ease-in-out;
+}
+
+.letter_disappear {
+  animation-name: disappear;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+  animation-delay: 4s;
 }
 
 .letter__content_hidden {
@@ -107,6 +116,55 @@
   }
 }
 
+.marks {
+  position: absolute;
+  width: 22.9rem;
+  height: 12.3rem;
+  top: 23.4rem;
+  left: 11.8rem;
+
+  .mark {
+    opacity: 0;
+  }
+}
+
+.marks_visible {
+  .mark {
+    animation-name: mark_appear;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+}
+
+.mark {
+  position: absolute;
+
+  &_1 {
+    top: 4rem;
+    left: 8.8rem;
+    animation-delay: 3s;
+  }
+
+  &_2 {
+    top: 0.2rem;
+    right: 2.5rem;
+    animation-delay: 2.5s;
+  }
+
+  &_3 {
+    top: 0.7rem;
+    left: 0.7rem;
+    animation-delay: 2.7s;
+  }
+
+  &_4 {
+    top: 4.5rem;
+    right: 0.7rem;
+    animation-delay: 2.2s;
+  }
+}
+
 .button {
   cursor: pointer;
   display: flex;
@@ -130,4 +188,37 @@
 
 .button_hidden {
   opacity: 0;
+}
+
+@keyframes mark_appear {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateX(-50%);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(0.5) translateX(-50%) rotate(10deg);
+  }
+
+  99% {
+    opacity: 1;
+    transform: scale(0.5) translateX(150vw) rotate(10deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.5) translateX(150vw) rotate(10deg);
+  }
 }
