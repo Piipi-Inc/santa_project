@@ -16,6 +16,7 @@ const screenMap: Record<
   [Screens.LOBBY]: () => import("../Lobby"),
   [Screens.STORY_TELLING]: () => import("../StoryTelling"),
   [Screens.PREFERENCES]: () => import("../Preferences"),
+  [Screens.USER]: () => import("../User"),
 };
 
 export const ScreenSwitch = observer(() => {

@@ -4,11 +4,13 @@ import { useStore } from "src/store";
 import styles from "./index.module.scss";
 import { Elf } from "src/shared/components/Elf";
 import { LobbyTable } from "./components/LobbyTable";
+import { Screens } from "src/store/screen/types/enums";
 
 const Main = observer(() => {
   const {
     lobbiesStore: { userLobbies, joinLobby, createLobby, goToLobby },
     user: { userInfo },
+    screenStore: { setScreen },
   } = useStore();
 
   const lobbyCodeRef = useRef("");
@@ -36,10 +38,14 @@ const Main = observer(() => {
     createLobby({ lobby_name: lobbyNameRef.current });
   };
 
+  const goToUserPage = () => {
+    setScreen(Screens.USER);
+  };
+
   return (
     <div className={styles.main}>
       {userInfo && (
-        <div className={styles.avatarWrap}>
+        <div className={styles.avatarWrap} onClick={goToUserPage}>
           <Elf username={userInfo.username} className={styles.avatar} />
         </div>
       )}

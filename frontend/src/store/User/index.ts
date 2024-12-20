@@ -1,10 +1,19 @@
 import api from "src/api";
 import * as T from "./types/types";
 import { LoginPasswordPayload } from "../types/types";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export class User {
   private _isAuthenticated = false;
-  private _userInfo?: T.UserInfo;
+  private _userInfo: T.UserInfo | null = null;
+
+  constructor() {
+    makeObservable<this, "_userInfo" | "setUserInfo">(this, {
+      _userInfo: observable,
+      setUserInfo: action,
+      userInfo: computed,
+    });
+  }
 
   public init = async () => {
     try {
@@ -49,6 +58,14 @@ export class User {
   public saveUserPreferences = async (preferences: string) => {
     this.setUserInfo({ ...this.userInfo, preferences: preferences });
     await api.updateUser({ name: this.userInfo.name, preferences });
+  };
+
+  public saveUserName = async (name: string) => {
+    this.setUserInfo({ ...this.userInfo, name });
+    await api.updateUser({
+      name: this.userInfo.name,
+      preferences: this.userInfo.preferences,
+    });
   };
 
   public get userInfo() {

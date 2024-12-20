@@ -6,4 +6,5 @@ export enum Screens {
   LOBBY = "lobby",
   STORY_TELLING = "story_telling",
   PREFERENCES = "preferences",
+  USER = "user",
 }

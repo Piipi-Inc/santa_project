@@ -70,6 +70,12 @@ export class RootStore {
 
     if (this.screenStore.currentScreen === Screens.LOBBY) {
       await this.screenStore.setScreen(Screens.MAIN);
+      return;
+    }
+
+    if (this.screenStore.currentScreen === Screens.USER) {
+      await this.screenStore.setScreen(Screens.MAIN);
+      return;
     }
   };
 
