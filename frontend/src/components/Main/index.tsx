@@ -15,13 +15,12 @@ const Main = observer(() => {
 
   const [lobbyCode, setLobbyCode] = useState('');
 
-  const lobbyCodeRef = useRef('');
   const lobbyNameRef = useRef('');
 
   const handleJoinLobby = async () => {
-    if (lobbyCodeRef.current === '') return;
+    if (lobbyCode === '') return;
 
-    await joinLobby({ lobby_id: lobbyCodeRef.current });
+    await joinLobby({ lobby_id: lobbyCode });
   };
 
   const handleCodeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
