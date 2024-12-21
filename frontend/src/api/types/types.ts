@@ -42,6 +42,7 @@ export type LobbyInfo = {
     id: string;
     username: string;
     name: string;
+    has_gift: boolean;
   }[];
   is_started: boolean;
   admin_username: string;

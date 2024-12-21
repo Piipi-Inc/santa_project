@@ -6,6 +6,10 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
+
+  &_noGift {
+    background-image: url('data:image/svg+xml,<svg width="510" height="77" viewBox="0 0 510 77" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M481.493 77L510 0H6.57861L-3.05176e-05 77H481.493Z" fill="%23323030"/></svg>');
+  }
 }
 
 .iconWrap {

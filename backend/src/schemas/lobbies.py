@@ -7,6 +7,7 @@ class JoinedParticipant(BaseModel):
     id: UUID
     username: str
     name: str
+    has_gift: bool
 
 
 class SCreateLobbyRequest(BaseModel):

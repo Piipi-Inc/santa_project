@@ -9,7 +9,7 @@ import Letter from "./components/Letter";
 
 const Lobby = observer(() => {
   const {
-    lobbiesStore: { currentLobby },
+    lobbiesStore: { currentLobby, currentGift },
     user: { userInfo },
     goBack,
   } = useStore();
@@ -32,8 +32,7 @@ const Lobby = observer(() => {
           создатель: {creatorUsername}
         </span>
       </div>
-      {currentLobby.is_started && <div className={styles.letter} onClick={() => setIsLetterVisible(true)} />}
-      {/* <div className={styles.letter} onClick={() => setIsLetterVisible(true)} /> */}
+      {currentLobby.is_started && currentGift && <div className={styles.letter} onClick={() => setIsLetterVisible(true)} />}
       {isLetterVisible && <Letter setIsLetterVisible={setIsLetterVisible} />}
       <LobbyButton
         className={styles.button}
@@ -49,6 +48,8 @@ const Lobby = observer(() => {
               key={participant.id}
               name={participant.name}
               username={participant.username}
+              has_gift={participant.has_gift}
+              is_started={currentLobby.is_started}
             />
           ))}
         </div>

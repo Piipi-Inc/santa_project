@@ -55,7 +55,7 @@ export class User {
     await api.saveEvent({ event_name: "story_telling" });
   };
 
-  public saveUserPreferences = async (preferences: string) => {
+  public saveUserPreferences = async ({preferences}: {preferences: string}) => {
     this.setUserInfo({ ...this.userInfo, preferences: preferences });
     await api.updateUser({ name: this.userInfo.name, preferences });
   };

@@ -79,7 +79,7 @@ export class ApiService {
       return Promise.resolve();
     }
 
-    return this.axiosInstance.patch(`${this.apiUrl}/user/update`, {
+    return this.axiosInstance.patch(`${this.apiUrl}/user/`, {
       name,
       preferences,
     });

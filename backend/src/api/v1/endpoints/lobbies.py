@@ -105,7 +105,7 @@ async def get_lobby_info(
     if res_lobby:
 
         stmt = (
-            select(User.id, User.username, User.name)
+            select(User.id, User.username, User.name, Participant.santa_to)
             .filter(User.id == Participant.user_id)
             .filter(Lobby.id == Participant.lobby_id)
             .filter(Lobby.id == lobby_id)
@@ -113,7 +113,12 @@ async def get_lobby_info(
         )
         res = await session.execute(stmt)
         participant_list = [
-            JoinedParticipant(id=p[0], username=p[1], name=p[2])
+            JoinedParticipant(
+                id=p[0],
+                username=p[1],
+                name=p[2],
+                has_gift=True if p[3] else False,
+            )
             for p in res.all()
         ]
 
@@ -164,6 +169,9 @@ async def join_lobby(
             session.add(new_participant)
             await session.commit()
             await session.refresh(new_participant)
+
+            message = {"event": "join"}
+            await manager.broadcast(lobby_data.lobby_id, message)
         except Exception as e:
             await session.rollback()
             raise e
@@ -230,7 +238,7 @@ async def start_lobby(
     lobby_id: str,
     current_user: Participant = Depends(auth_manager.get_current_user),
     session: AsyncSession = Depends(get_async_session),
-):
+) -> None:
     participant = await session.execute(
         select(Participant)
         .where(Participant.lobby_id == lobby_id)
@@ -268,10 +276,8 @@ async def start_lobby(
 
     await session.commit()
 
-    message = {"type": "lobby_started", "lobby_id": lobby_id}
+    message = {"event": "start"}
     await manager.broadcast(lobby_id, message)
-
-    return {"message": "Lobby started"}
 
 
 @router.get("/{lobby_id}/gift")
@@ -279,7 +285,7 @@ async def get_gift(
     lobby_id: str,
     current_user: User = Depends(auth_manager.get_current_user),
     session: AsyncSession = Depends(get_async_session),
-) -> SGiftResponse:
+) -> SGiftResponse | None:
     """
     Get the santa letter of the current user in the specified lobby
     :param: lobby_id: the id of the lobby
@@ -305,8 +311,9 @@ async def get_gift(
 
     res = await session.execute(stmt)
     res = res.all()
-    result = SGiftResponse(
-        username=res[0][0], name=res[0][1], preferences=res[0][2]
-    )
+    if res:
+        return SGiftResponse(
+            username=res[0][0], name=res[0][1], preferences=res[0][2]
+        )
 
-    return result
+    return None

@@ -17,9 +17,5 @@ class Config(BaseSettings):
 
     html_test_path: str = "assets/check_lobby_websokets.html"
 
-    # class Config:
-    #     env_file = ".env"
-    #     extra = "allow"
-
 
 config = Config()
