@@ -26,7 +26,7 @@ jobs:
     - name: Deploy to Server
       run: |
         ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.SERVER_IP }} << EOF
-        cd /santa_project
+        cd /home/santa_project
         git pull origin main
-        docker-compose up -d --build
+        docker compose up -d --build
         EOF
