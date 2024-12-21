@@ -1,7 +1,7 @@
 export type RegisterPayload = {
   username: string;
   name: string;
-  preferences: string;
+  preferences: string | null;
   password: string;
 };
 
@@ -49,7 +49,7 @@ export type LobbyInfo = {
 };
 
 export type LobbyGift = {
-  username: string
-  name: string
-  preferences: string | null
-}
+  username: string;
+  name: string;
+  preferences: string | null;
+};

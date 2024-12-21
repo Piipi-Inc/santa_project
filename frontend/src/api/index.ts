@@ -1,38 +1,28 @@
-import axios, { AxiosInstance, AxiosRequestHeaders } from "axios";
-import { mocks } from "./mocks";
-import * as T from "./types/types";
+import axios, { AxiosInstance, AxiosRequestHeaders } from 'axios';
+import { mocks } from './mocks';
+import * as T from './types/types';
 
 export class ApiService {
-  private readonly isMockBackendEnabled =
-    import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === "on";
-
+  private readonly isMockBackendEnabled = import.meta.env.VITE_IS_MOCK_BACKEND_ENABLED === 'on';
   private readonly axiosInstance: AxiosInstance;
-
   private readonly headers: Partial<AxiosRequestHeaders>;
-
   private readonly baseUrl = import.meta.env.VITE_BASE_URL;
-
   private readonly apiUrl = `${this.baseUrl}/api/v1`;
 
   constructor() {
     this.headers = {
-      "Content-Type": "application/json",
-      accept: "application/json",
+      'Content-Type': 'application/json',
+      accept: 'application/json'
     };
     this.axiosInstance = axios.create({
       headers: this.headers,
       timeout: 5000,
       baseURL: this.baseUrl,
-      withCredentials: true,
+      withCredentials: true
     });
   }
 
-  public register = async ({
-    username,
-    name,
-    preferences,
-    password,
-  }: T.RegisterPayload) => {
+  public register = async ({ username, name, preferences, password }: T.RegisterPayload) => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.registerResponse);
     }
@@ -41,7 +31,7 @@ export class ApiService {
       username,
       name,
       preferences,
-      password,
+      password
     });
   };
 
@@ -52,7 +42,7 @@ export class ApiService {
 
     return this.axiosInstance.post(`${this.apiUrl}/auth/login`, {
       username,
-      password,
+      password
     });
   };
 
@@ -69,9 +59,7 @@ export class ApiService {
       return Promise.resolve(mocks.user);
     }
 
-    return this.axiosInstance
-      .get(`${this.apiUrl}/user`)
-      .then((res) => res.data);
+    return this.axiosInstance.get(`${this.apiUrl}/user`).then((res) => res.data);
   };
 
   public updateUser = async ({ name, preferences }: T.PatchUserPayload) => {
@@ -81,7 +69,7 @@ export class ApiService {
 
     return this.axiosInstance.patch(`${this.apiUrl}/user/`, {
       name,
-      preferences,
+      preferences
     });
   };
 
@@ -90,37 +78,27 @@ export class ApiService {
       return Promise.resolve(mocks.userLobbies);
     }
 
-    return this.axiosInstance
-      .get(`${this.apiUrl}/user/lobbies`)
-      .then((res) => res.data);
+    return this.axiosInstance.get(`${this.apiUrl}/user/lobbies`).then((res) => res.data);
   };
 
-  public createLobby = async ({
-    lobby_name,
-  }: T.CreateLobbyPayload): Promise<T.CreateLobbyResponse> => {
+  public createLobby = async ({ lobby_name }: T.CreateLobbyPayload): Promise<T.CreateLobbyResponse> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.newLobby);
     }
 
     return this.axiosInstance
       .post(`${this.apiUrl}/lobby`, {
-        lobby_name,
+        lobby_name
       })
       .then((res) => res.data);
   };
 
-  public getLobby = async ({
-    lobby_id,
-  }: {
-    lobby_id: string;
-  }): Promise<T.LobbyInfo> => {
+  public getLobby = async ({ lobby_id }: { lobby_id: string }): Promise<T.LobbyInfo> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.lobby);
     }
 
-    return this.axiosInstance
-      .get(`${this.apiUrl}/lobby/${lobby_id}`)
-      .then((res) => res.data);
+    return this.axiosInstance.get(`${this.apiUrl}/lobby/${lobby_id}`).then((res) => res.data);
   };
 
   public joinLobby = async ({ lobby_id }: T.JoinLobbyPayload) => {
@@ -144,7 +122,7 @@ export class ApiService {
       return Promise.resolve(mocks.getGiftResponse);
     }
 
-    return this.axiosInstance.get(`${this.apiUrl}/lobby/${lobby_id}/gift`).then(res => res.data);
+    return this.axiosInstance.get(`${this.apiUrl}/lobby/${lobby_id}/gift`).then((res) => res.data);
   };
 
   public saveEvent = async ({ event_name }: { event_name: string }) => {
@@ -153,7 +131,7 @@ export class ApiService {
     }
 
     return this.axiosInstance.post(`${this.apiUrl}/events/complete`, {
-      event_name,
+      event_name
     });
   };
 }

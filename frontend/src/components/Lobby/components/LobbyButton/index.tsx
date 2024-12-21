@@ -1,12 +1,11 @@
-import Background from "./images/bg.svg?react";
-import styles from "./index.module.scss";
-import cn from "classnames";
+import Background from './images/bg.svg?react';
+import styles from './index.module.scss';
+import cn from 'classnames';
 
 const getText = (isAdmin, isStarted, adminUserName) => {
-  if (isAdmin && isStarted) return "заново";
-  if (isAdmin && !isStarted) return "начать";
-  if (!isAdmin && !isStarted)
-    return `игра начнется,<br/>когда решит @${adminUserName}`;
+  if (isAdmin && isStarted) return 'заново';
+  if (isAdmin && !isStarted) return 'начать';
+  if (!isAdmin && !isStarted) return `игра начнется,<br/>когда решит @${adminUserName}`;
   return `игра<br/>завершилась`;
 };
 
@@ -15,7 +14,7 @@ export const LobbyButton = ({
   isAdmin,
   adminUserName,
   isStarted,
-  onClick,
+  onClick
 }: {
   className?: string;
   isAdmin: boolean;
@@ -24,7 +23,7 @@ export const LobbyButton = ({
   onClick: () => void;
 }) => {
   const rootStyles = cn(styles.lobbyButton, className, {
-    [styles.lobbyButton__isNonAdmin]: !isAdmin,
+    [styles.lobbyButton__isNonAdmin]: !isAdmin
   });
 
   return (
@@ -33,7 +32,7 @@ export const LobbyButton = ({
       <span
         className={styles.text}
         dangerouslySetInnerHTML={{
-          __html: getText(isAdmin, isStarted, adminUserName),
+          __html: getText(isAdmin, isStarted, adminUserName)
         }}
       />
     </div>

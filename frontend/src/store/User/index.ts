@@ -1,17 +1,17 @@
-import api from "src/api";
-import * as T from "./types/types";
-import { LoginPasswordPayload } from "../types/types";
-import { action, computed, makeObservable, observable } from "mobx";
+import api from 'api';
+import * as T from './types/types';
+import { LoginPasswordPayload } from '../types/types';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 export class User {
   private _isAuthenticated = false;
   private _userInfo: T.UserInfo | null = null;
 
   constructor() {
-    makeObservable<this, "_userInfo" | "setUserInfo">(this, {
+    makeObservable<this, '_userInfo' | 'setUserInfo'>(this, {
       _userInfo: observable,
       setUserInfo: action,
-      userInfo: computed,
+      userInfo: computed
     });
   }
 
@@ -29,42 +29,43 @@ export class User {
   public login = async ({ login, password }: LoginPasswordPayload) => {
     await api.login({
       username: login,
-      password,
+      password
     });
     await this.init();
   };
 
-  public register = async ({ login, password, name }: LoginPasswordPayload) => {
+  public register = async ({ login, password, name }: LoginPasswordPayload & { name: string }) => {
     await api.register({
       username: login,
-      name: name,
+      name,
       preferences: null,
-      password: password,
+      password: password
     });
     await this.init();
   };
 
   public saveStoryTellingCompleted = async () => {
-    if (this.hasSeenStoryTelling) return;
+    if (this.hasSeenStoryTelling || !this.userInfo) return;
 
-    const completedEvents = [
-      ...this.userInfo.completed_events,
-      "story_telling",
-    ];
+    const completedEvents = [...this.userInfo.completed_events, 'story_telling'];
     this.setUserInfo({ ...this.userInfo, completed_events: completedEvents });
-    await api.saveEvent({ event_name: "story_telling" });
+    await api.saveEvent({ event_name: 'story_telling' });
   };
 
-  public saveUserPreferences = async ({preferences}: {preferences: string}) => {
+  public saveUserPreferences = async ({ preferences }: { preferences: string }) => {
+    if (!this.userInfo) return;
+
     this.setUserInfo({ ...this.userInfo, preferences: preferences });
     await api.updateUser({ name: this.userInfo.name, preferences });
   };
 
   public saveUserName = async (name: string) => {
+    if (!this.userInfo || !this.userInfo.preferences) return;
+
     this.setUserInfo({ ...this.userInfo, name });
     await api.updateUser({
       name: this.userInfo.name,
-      preferences: this.userInfo.preferences,
+      preferences: this.userInfo.preferences
     });
   };
 
@@ -77,14 +78,14 @@ export class User {
   }
 
   public get hasSeenStoryTelling() {
-    return this._userInfo.completed_events.includes("story_telling");
+    return this._userInfo?.completed_events.includes('story_telling');
   }
 
   private setIsAuthenticated = (isAuthenticated: boolean) => {
     this._isAuthenticated = isAuthenticated;
   };
 
-  private setUserInfo = (userInfo: T.UserInfo) => {
+  private setUserInfo = (userInfo: User['_userInfo']) => {
     this._userInfo = userInfo;
   };
 }

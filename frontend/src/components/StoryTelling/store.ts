@@ -1,27 +1,26 @@
-import { action, makeObservable, observable } from "mobx";
-import { wait } from "src/shared/utils/wait";
+import { action, makeObservable, observable } from 'mobx';
+import { wait } from 'shared/utils/wait';
 
 export class StoryTellingStore {
-  public step: "start" | "santa" | "elf" | "finish" = "start";
-  private readonly saveProgress: () => Promise<void>;
+  public step: 'start' | 'santa' | 'elf' | 'finish' = 'start';
 
   constructor() {
-    makeObservable<this, "setStep">(this, {
+    makeObservable<this, 'setStep'>(this, {
       step: observable,
-      setStep: action,
+      setStep: action
     });
   }
 
   public run = async () => {
     await wait(1000);
-    this.setStep("santa");
+    this.setStep('santa');
     await wait(2000);
-    this.setStep("elf");
+    this.setStep('elf');
     await wait(2000);
-    this.setStep("finish");
+    this.setStep('finish');
   };
 
-  private setStep = (step: StoryTellingStore["step"]) => {
+  private setStep = (step: StoryTellingStore['step']) => {
     this.step = step;
   };
 }

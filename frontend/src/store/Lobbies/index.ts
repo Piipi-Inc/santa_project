@@ -1,9 +1,9 @@
-import { action, computed, makeObservable, observable } from "mobx";
-import { LobbyInfo, UserLobby, LobbyGift } from "src/api/types/types";
-import api from "src/api";
-import { ScreenStore } from "../screen";
-import { Screens } from "../screen/types/enums";
-import { wait } from "src/shared/utils/wait";
+import { action, computed, makeObservable, observable } from 'mobx';
+import { LobbyInfo, UserLobby, LobbyGift } from 'api/types/types';
+import api from 'api';
+import { ScreenStore } from '../screen';
+import { Screens } from '../screen/types/enums';
+import { wait } from 'shared/utils/wait';
 
 export class LobbiesStore {
   private _userLobbies: UserLobby[] | null = null;
@@ -16,11 +16,7 @@ export class LobbiesStore {
 
     makeObservable<
       this,
-      | "_userLobbies"
-      | "_currentLobbyInfo"
-      | "setCurrentLobbyInfo"
-      | "_currentLobbyGift"
-      | "setCurrentLobbyGift"
+      '_userLobbies' | '_currentLobbyInfo' | 'setCurrentLobbyInfo' | '_currentLobbyGift' | 'setCurrentLobbyGift'
     >(this, {
       _userLobbies: observable,
       setUserLobbies: action,
@@ -32,7 +28,7 @@ export class LobbiesStore {
 
       _currentLobbyGift: observable,
       setCurrentLobbyGift: action,
-      currentGift: computed,
+      currentGift: computed
     });
   }
 
@@ -61,7 +57,7 @@ export class LobbiesStore {
     this.setCurrentLobbyInfo(lobby);
     this._screenStore.setScreen(Screens.LOBBY);
 
-    if (this._currentLobbyInfo.is_started) {
+    if (this._currentLobbyInfo?.is_started) {
       const gift = await api.getGift({ lobby_id: lobbyId });
       this.setCurrentLobbyGift(gift);
     }
@@ -81,14 +77,13 @@ export class LobbiesStore {
     this.setUserLobbies(userLobbies);
   };
 
-  public setUserLobbies = (userLobbies: LobbiesStore["_userLobbies"]) => {
+  public setUserLobbies = (userLobbies: LobbiesStore['_userLobbies']) => {
     this._userLobbies = userLobbies;
   };
 
   public startGame = async ({ isAdmin }: { isAdmin: boolean }) => {
-    console.log("start game");
-    if (!this.currentLobby || (!isAdmin && this.currentLobby.is_started))
-      return;
+    console.log('start game');
+    if (!this.currentLobby || (!isAdmin && this.currentLobby.is_started)) return;
 
     await api.startGame({ lobby_id: this.currentLobby.lobby_id });
   };

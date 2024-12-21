@@ -1,33 +1,19 @@
-import {
-  action, computed, makeObservable, observable,
-} from 'mobx';
-import { wait } from 'src/shared/utils/wait';
-import { LoginPasswordPayload } from 'src/store/types/types';
+import { AxiosError } from 'axios';
+import { action, computed, makeObservable, observable } from 'mobx';
+import { wait } from 'shared/utils/wait';
+import { LoginPasswordPayload } from 'store/types/types';
 
 export class AuthenticateScreenStore {
   private _step: 'start' | 'login' | 'password' | 'name' | 'finish' = 'start';
-
   private _auth_scenario: 'login' | 'register';
-
   private _isLoginValid = false;
-
   private _isPasswordValid = false;
-
   private _isNameValid = false;
-
   private _isLoginFailed = false;
-
-  private readonly authenticate: ({
-    login,
-    password,
-  }: LoginPasswordPayload) => Promise<void>;
-
-  private readonly handleRegisterEnd: () => Promise<void>
-
+  private readonly authenticate: ({ login, password, name }: LoginPasswordPayload & { name?: string }) => Promise<void>;
+  private readonly handleRegisterEnd: () => Promise<void>;
   private login = '';
-
   private password = '';
-
   private name = '';
 
   constructor({
@@ -35,8 +21,8 @@ export class AuthenticateScreenStore {
     auth_scenario,
     handleRegisterEnd
   }: {
-    authenticate: ({ login, password }: LoginPasswordPayload) => Promise<void>,
-    auth_scenario: 'login' | 'register',
+    authenticate: ({ login, password }: LoginPasswordPayload) => Promise<void>;
+    auth_scenario: 'login' | 'register';
     handleRegisterEnd: () => Promise<void>;
   }) {
     this.authenticate = authenticate;
@@ -72,7 +58,7 @@ export class AuthenticateScreenStore {
 
       _isLoginFailed: observable,
       setIsLoginFailed: action,
-      isLoginFailed: computed,
+      isLoginFailed: computed
     });
   }
 
@@ -101,47 +87,47 @@ export class AuthenticateScreenStore {
   };
 
   public handleSubmitLogin = () => {
-    if (!this.login) return
-    if (!this._isLoginValid) return
+    if (!this.login) return;
+    if (!this._isLoginValid) return;
     this.setIsLoginValid(false);
     this.setStep('password');
     this.setIsLoginFailed(false);
   };
 
   public handleSubmitPassword = async () => {
-    if (!this._isPasswordValid) return
+    if (!this._isPasswordValid) return;
     if (this._auth_scenario === 'login') {
       try {
         await this.authenticate({ login: this.login, password: this.password });
       } catch (error) {
-        if (error.status === 404) {
+        if ((error as AxiosError).status === 404) {
           this.setIsLoginFailed(true);
-          this.setStep('login')
+          this.setStep('login');
         }
       }
     } else {
-      this.setStep('name')
+      this.setStep('name');
     }
   };
 
   public handleSubmitName = async () => {
-    if (!this._isNameValid) return
+    if (!this._isNameValid) return;
     try {
       await this.authenticate({ login: this.login, password: this.password, name: this.name });
       this.setStep('finish');
       await wait(2000);
-      await this.handleRegisterEnd()
+      await this.handleRegisterEnd();
     } catch (error) {
       this.setStep('login');
     }
   };
 
-  public handleInputClick = (input: "login") => {
-    if (this.step === "password") {
-      this.setStep('login')
+  public handleInputClick = (input: 'login') => {
+    if (this.step === 'password') {
+      this.setStep('login');
       this.setIsLoginValid(true);
     }
-  }
+  };
 
   private setStep = (step: AuthenticateScreenStore['_step']) => {
     this._step = step;
@@ -177,7 +163,7 @@ export class AuthenticateScreenStore {
 
   public setIsLoginFailed = (value: boolean) => {
     this._isLoginFailed = value;
-  }
+  };
 
   public get isLoginFailed() {
     return this._isLoginFailed;

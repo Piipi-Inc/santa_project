@@ -1,20 +1,18 @@
-import BackButton from "src/shared/components/BackButton";
-import styles from "./index.module.scss";
-import { observer } from "mobx-react-lite";
-import { useStore } from "src/store";
-import { useState } from "react";
-import { Elf } from "src/shared/components/Elf";
+import BackButton from 'shared/components/BackButton';
+import styles from './index.module.scss';
+import { observer } from 'mobx-react-lite';
+import { useStore } from 'store';
+import { useState } from 'react';
+import { Elf } from 'shared/components/Elf';
 
 const UserPage = observer(() => {
   const {
     goBack,
-    user: { userInfo, saveUserName, saveUserPreferences },
+    user: { userInfo, saveUserName, saveUserPreferences }
   } = useStore();
 
-  const [preferencesValue, setPreferencesValue] = useState(
-    userInfo.preferences
-  );
-  const [nameValue, setNameValue] = useState(userInfo.name);
+  const [preferencesValue, setPreferencesValue] = useState(userInfo?.preferences || '');
+  const [nameValue, setNameValue] = useState(userInfo?.name || '');
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPreferencesValue(e.target.value);
@@ -25,14 +23,16 @@ const UserPage = observer(() => {
   };
 
   const saveNewName = async () => {
-    if (userInfo.name === nameValue) return;
+    if (userInfo?.name === nameValue) return;
     await saveUserName(nameValue);
   };
 
   const saveNewPreferences = async () => {
-    if ((userInfo.preferences = preferencesValue)) return;
-    await saveUserPreferences(preferencesValue);
+    if (userInfo?.preferences === preferencesValue || !preferencesValue) return;
+    await saveUserPreferences({ preferences: preferencesValue });
   };
+
+  if (!userInfo) return null;
 
   return (
     <div className={styles.userPage}>
@@ -48,7 +48,7 @@ const UserPage = observer(() => {
         <textarea
           className={styles.textarea}
           onChange={handleChangeInput}
-          value={preferencesValue}
+          value={preferencesValue ?? ''}
           placeholder="хочу..."
           maxLength={140}
         />
@@ -66,14 +66,8 @@ const UserPage = observer(() => {
         <div className={styles.userInfo}>
           <span className={styles.username}>@{userInfo.username}</span>
           <span className={styles.nameWrap}>
-            <input
-              onChange={handleNameChangeInput}
-              className={styles.name}
-              value={nameValue}
-            />
-            {userInfo.name !== nameValue && (
-              <span onClick={saveNewName} className={styles.pen} />
-            )}
+            <input onChange={handleNameChangeInput} className={styles.name} value={nameValue} />
+            {userInfo?.name !== nameValue && <span onClick={saveNewName} className={styles.pen} />}
           </span>
         </div>
       </div>

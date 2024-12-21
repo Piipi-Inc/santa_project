@@ -1,16 +1,16 @@
-import { Context, createContext, useContext } from "react";
-import { wait } from "src/shared/utils/wait";
-import { ScreenStore } from "./screen";
-import { Screens } from "./screen/types/enums";
-import { LobbiesStore } from "./Lobbies";
-import { User } from "./User";
-import * as T from "./types/types";
+import * as T from './types/types';
+import { Context, createContext, useContext } from 'react';
+import { ScreenStore } from './screen';
+import { Screens } from './screen/types/enums';
+import { LobbiesStore } from './Lobbies';
+import { User } from './User';
+import { wait } from 'shared/utils/wait';
 
 export class RootStore {
   public readonly screenStore: ScreenStore;
   public readonly lobbiesStore: LobbiesStore;
   public readonly user: User;
-  public auth_scenario: "login" | "register" = "login";
+  public auth_scenario: 'login' | 'register' = 'login';
 
   constructor() {
     this.user = new User();
@@ -39,27 +39,24 @@ export class RootStore {
     }
   };
 
-  public handleWelcomeScenario = async (
-    auth_scenario: RootStore["auth_scenario"]
-  ) => {
+  public handleWelcomeScenario = async (auth_scenario: RootStore['auth_scenario']) => {
     this.auth_scenario = auth_scenario;
     await this.screenStore.setScreen(Screens.AUTHENTICATE);
   };
 
-  public authenticate = async ({
-    login,
-    password,
-    name,
-  }: T.LoginPasswordPayload) => {
-    if (this.auth_scenario === "login") {
+  public authenticate = async ({ login, password, name }: T.LoginPasswordPayload & { name?: string }) => {
+    if (this.auth_scenario === 'login') {
       await this.login({ login, password });
-    } else {
-      await this.register({
-        login,
-        name,
-        password,
-      });
+      return;
     }
+
+    if (!name) return;
+
+    await this.register({
+      login,
+      name,
+      password
+    });
   };
 
   public goBack = async () => {
@@ -99,16 +96,11 @@ export class RootStore {
     return;
   };
 
-  private register = async ({
-    login,
-    name,
-    password,
-  }: T.LoginPasswordPayload) => {
+  private register = async ({ login, name, password }: T.LoginPasswordPayload & { name: string }) => {
     await this.user.register({ login, password, name });
     await this.lobbiesStore.init();
   };
 }
 
 export const RootStoreContext = createContext<RootStore | null>(null);
-export const useStore = () =>
-  useContext(RootStoreContext as Context<RootStore>);
+export const useStore = () => useContext(RootStoreContext as Context<RootStore>);

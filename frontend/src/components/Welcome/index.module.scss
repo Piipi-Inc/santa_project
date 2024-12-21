@@ -18,7 +18,7 @@
   position: absolute;
   width: 11.8rem;
   height: 17.2rem;
-  background: url("../../shared/images/santa.svg") center/100% no-repeat;
+  background: url('../../shared/images/santa.svg') center/100% no-repeat;
   top: calc(50% - 15rem);
   left: calc(50% - 34.6rem);
 }
@@ -55,13 +55,13 @@
   cursor: pointer;
   width: 24.2rem;
   height: 7rem;
-  background: url("./images/buttonBackground.svg") center/100% no-repeat;
+  background: url('./images/buttonBackground.svg') center/100% no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
   font-size: 3.6rem;
-  font-family: "JetBrains Mono", serif;
+  font-family: 'JetBrains Mono', serif;
   font-weight: 400;
   transition: 0.3s ease-in-out transform;
 

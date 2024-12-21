@@ -1,20 +1,18 @@
-import cn from "classnames";
-import styles from "./index.module.scss";
-import Santa from "src/shared/images/santa.svg?react";
-import { Title } from "src/shared/components/Title";
-import { useStore } from "src/store";
-import { Elf } from "src/shared/components/Elf";
-import { observer, useLocalObservable } from "mobx-react-lite";
-import { StoryTellingStore } from "./store";
-import { useEffect } from "react";
-import { Screens } from "src/store/screen/types/enums";
+import cn from 'classnames';
+import styles from './index.module.scss';
+import Santa from 'shared/images/santa.svg?react';
+import { Title } from 'shared/components/Title';
+import { useStore } from 'store';
+import { Elf } from 'shared/components/Elf';
+import { observer, useLocalObservable } from 'mobx-react-lite';
+import { StoryTellingStore } from './store';
+import { useEffect } from 'react';
+import { Screens } from 'store/screen/types/enums';
 
 const StoryTelling = observer(() => {
   const {
     screenStore: { setScreen },
-    user: {
-      userInfo: { username },
-    },
+    user: { userInfo }
   } = useStore();
 
   const store = useLocalObservable(() => new StoryTellingStore());
@@ -38,7 +36,7 @@ const StoryTelling = observer(() => {
         </div>
       </div>
       <div className={cn(styles.elfWrap, styles[`elfWrap_${store.step}`])}>
-        <Elf className={styles.elf} username={username} />
+        {userInfo && <Elf className={styles.elf} username={userInfo.username} />}
         <div className={styles.bubble}>
           <span className={styles.text}>
             Ёбаный старый
@@ -51,13 +49,7 @@ const StoryTelling = observer(() => {
           </span>
         </div>
       </div>
-      <div
-        className={cn(
-          styles.button,
-          store.step === "finish" && styles.button__visible
-        )}
-        onClick={handleButtonClick}
-      >
+      <div className={cn(styles.button, store.step === 'finish' && styles.button__visible)} onClick={handleButtonClick}>
         дальше
       </div>
     </div>

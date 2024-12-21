@@ -1,5 +1,5 @@
-import { action, makeObservable, observable } from "mobx";
-import { LobbiesStore } from "src/store/Lobbies";
+import { action, makeObservable, observable } from 'mobx';
+import { LobbiesStore } from 'store/Lobbies';
 
 export class LobbyStore {
   private webSocket?: WebSocket;
@@ -11,17 +11,15 @@ export class LobbyStore {
 
     makeObservable(this, {
       isLetterVisible: observable,
-      setIsLetterVisible: action,
+      setIsLetterVisible: action
     });
   }
 
   public init = ({ lobbyId }: { lobbyId: string }) => {
-    this.webSocket = new WebSocket(
-      `${import.meta.env.VITE_WEB_SOCKET_URL}/api/v1/lobby/${lobbyId}/ws`
-    );
+    this.webSocket = new WebSocket(`${import.meta.env.VITE_WEB_SOCKET_URL}/api/v1/lobby/${lobbyId}/ws`);
 
     this.webSocket.onopen = (event) => {
-      console.log("Connected to lobby", event);
+      console.log('Connected to lobby', event);
     };
 
     this.webSocket.onmessage = (event) => {
@@ -29,7 +27,7 @@ export class LobbyStore {
 
       const socketEvent = data.event;
 
-      if (socketEvent === "start") {
+      if (socketEvent === 'start') {
         this.handleStartGame();
       }
 
@@ -37,12 +35,12 @@ export class LobbyStore {
     };
 
     this.webSocket.onclose = () => {
-      console.log("Disconnected from the lobby.");
+      console.log('Disconnected from the lobby.');
     };
   };
 
   public dispose = () => {
-    this.webSocket.close();
+    this.webSocket?.close();
   };
 
   public setIsLetterVisible = (value: boolean) => {

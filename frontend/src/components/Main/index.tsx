@@ -1,23 +1,23 @@
-import { useRef } from "react";
-import { observer } from "mobx-react-lite";
-import { useStore } from "src/store";
-import styles from "./index.module.scss";
-import { Elf } from "src/shared/components/Elf";
-import { LobbyTable } from "./components/LobbyTable";
-import { Screens } from "src/store/screen/types/enums";
+import { useRef } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStore } from 'store';
+import styles from './index.module.scss';
+import { Elf } from 'shared/components/Elf';
+import { LobbyTable } from './components/LobbyTable';
+import { Screens } from 'store/screen/types/enums';
 
 const Main = observer(() => {
   const {
     lobbiesStore: { userLobbies, joinLobby, createLobby, goToLobby },
     user: { userInfo },
-    screenStore: { setScreen },
+    screenStore: { setScreen }
   } = useStore();
 
-  const lobbyCodeRef = useRef("");
-  const lobbyNameRef = useRef("");
+  const lobbyCodeRef = useRef('');
+  const lobbyNameRef = useRef('');
 
   const handleJoinLobby = async () => {
-    if (lobbyCodeRef.current === "") return;
+    if (lobbyCodeRef.current === '') return;
 
     await joinLobby({ lobby_id: lobbyCodeRef.current });
   };
@@ -26,9 +26,7 @@ const Main = observer(() => {
     lobbyCodeRef.current = e.target.value;
   };
 
-  const handleLobbyNameInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleLobbyNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     lobbyNameRef.current = e.target.value;
   };
 

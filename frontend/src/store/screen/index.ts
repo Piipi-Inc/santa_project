@@ -1,6 +1,4 @@
-import {
-  action, computed, makeObservable, observable,
-} from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import * as E from './types/enums';
 import { wait } from '../../shared/utils/wait';
 
@@ -17,7 +15,7 @@ export class ScreenStore {
 
       _isSwitching: observable,
       setIsSwitching: action,
-      isSwitching: computed,
+      isSwitching: computed
     });
   }
 

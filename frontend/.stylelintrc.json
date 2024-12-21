@@ -1,0 +1,56 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss",
+    "stylelint-config-property-sort-order-smacss"
+  ],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "order/order": [
+      "custom-properties",
+      "dollar-variables",
+      "at-variables",
+      "declarations",
+      "rules",
+      "at-rules"
+    ],
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "function",
+          "if",
+          "each",
+          "include",
+          "mixin",
+          "for",
+          "at-root",
+          "return",
+          "use",
+          "math"
+        ]
+      }
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["vh", "/^get-/"]
+      }
+    ],
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      { "ignoreFontFamilies": ["Circe", "Circe bold", "Balsamiq Sans"] }
+    ],
+    "function-name-case": "lower",
+    "selector-class-pattern": null,
+    "property-no-unknown": [true, { "ignoreProperties": ["r"] }],
+    "property-no-vendor-prefix": null
+  }
+}

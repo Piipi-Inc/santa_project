@@ -1,26 +1,26 @@
-import { useEffect } from "react";
-import styles from "./index.module.scss";
-import { observer, useLocalObservable } from "mobx-react-lite";
-import { useStore } from "src/store";
-import { Participant } from "./components/Participant";
-import { LobbyButton } from "./components/LobbyButton";
-import BackButton from "src/shared/components/BackButton";
-import Letter from "./components/Letter";
-import { LobbyStore } from "./store";
-import cn from "classnames";
+import { useEffect } from 'react';
+import styles from './index.module.scss';
+import { observer, useLocalObservable } from 'mobx-react-lite';
+import { useStore } from 'store';
+import { Participant } from './components/Participant';
+import { LobbyButton } from './components/LobbyButton';
+import BackButton from 'shared/components/BackButton';
+import Letter from './components/Letter';
+import { LobbyStore } from './store';
+import cn from 'classnames';
 
 const Lobby = observer(() => {
   const {
     lobbiesStore,
     lobbiesStore: { currentLobby, currentGift, startGame },
     user: { userInfo },
-    goBack,
+    goBack
   } = useStore();
 
   const store = useLocalObservable(() => new LobbyStore({ lobbiesStore }));
 
   useEffect(() => {
-    store.init({ lobbyId: currentLobby.lobby_id });
+    if (currentLobby) store.init({ lobbyId: currentLobby.lobby_id });
 
     return () => store.dispose();
   }, []);
@@ -29,7 +29,7 @@ const Lobby = observer(() => {
 
   const { lobby_id, lobby_name, admin_username, is_started } = currentLobby;
   const isAdmin = admin_username === userInfo.username;
-  const creatorUsername = isAdmin ? "вы" : `@${admin_username}`;
+  const creatorUsername = isAdmin ? 'вы' : `@${admin_username}`;
 
   const handleStartGame = () => {
     startGame({ isAdmin });
@@ -43,22 +43,15 @@ const Lobby = observer(() => {
       <div className={styles.header}>
         <span className={styles.lobby__code}>{lobby_id}</span>
         <span className={styles.lobby__name}>{lobby_name}</span>
-        <span className={styles.lobby__admin}>
-          создатель: {creatorUsername}
-        </span>
+        <span className={styles.lobby__admin}>создатель: {creatorUsername}</span>
       </div>
 
       <div
-        className={cn(
-          styles.letter,
-          isLetterPreviewVisible && styles.letter__visible
-        )}
+        className={cn(styles.letter, isLetterPreviewVisible && styles.letter__visible)}
         onClick={() => store.setIsLetterVisible(true)}
       />
 
-      {store.isLetterVisible && (
-        <Letter setIsLetterVisible={store.setIsLetterVisible} />
-      )}
+      {store.isLetterVisible && <Letter setIsLetterVisible={store.setIsLetterVisible} />}
       <LobbyButton
         className={styles.button}
         isAdmin={isAdmin}
