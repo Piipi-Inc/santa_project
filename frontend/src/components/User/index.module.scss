@@ -1,0 +1,136 @@
+.userPage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'JetBrains Mono', serif;
+}
+
+.backButton {
+  position: absolute;
+  top: 2.5rem;
+  left: 2.8rem;
+  width: 14.4rem;
+  height: 10.3rem;
+}
+
+.title {
+  position: absolute;
+  top: calc(50% - 26.3rem);
+  left: 25.7rem;
+  font-size: 5rem;
+  font-weight: 400;
+}
+
+.letter {
+  position: absolute;
+  top: calc(50% - 17.3rem);
+  left: 10rem;
+  width: 61.3rem;
+  height: 35.3rem;
+  background: url('data:image/svg+xml,<svg width="699" height="403" viewBox="0 0 699 403" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M68.5 383.5L1 40.5L641 12.5L687 402L68.5 383.5Z" fill="%23913333" stroke="white"/><path d="M82.5 367.5L12 14.5L653 0.5L699 386L82.5 367.5Z" fill="%23F7ECCB"/></svg>')
+    center/cover no-repeat;
+}
+
+.letter__title {
+  position: absolute;
+  top: 3.5rem;
+  left: 5.6rem;
+  font-size: 3.2rem;
+  font-weight: 900;
+}
+
+.textarea {
+  position: absolute;
+  background: none;
+  border: none;
+  top: 14.4rem;
+  left: 8.9rem;
+  width: 48.9rem;
+  height: 18.6rem;
+  font-size: 2.8rem;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button {
+  cursor: pointer;
+  position: absolute;
+  left: 26.6rem;
+  bottom: 6rem;
+  width: 28.2rem;
+  height: 7rem;
+  border: none;
+  background: url('data:image/svg+xml,<svg width="282" height="70" viewBox="0 0 282 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M31.5 0L282 7.99484L265.5 70H0L31.5 0Z" fill="%233A452F"/></svg>')
+    center/100% no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.6rem;
+  font-weight: 400;
+  color: #fff;
+}
+
+.side_panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 65.4rem;
+  height: 100vh;
+  background: url('data:image/svg+xml,<svg preserveAspectRatio="none" width="654" height="650" viewBox="0 0 654 650" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M684.5 667.5H108L0.5 -21H684.5V667.5Z" fill="%23E3C66A"/></svg>')
+    center/100% 100% no-repeat;
+}
+
+.icon {
+  position: absolute;
+  top: calc(50% - 26.6rem);
+  right: 18.2rem;
+  width: 20.8rem;
+  height: 26.5rem;
+}
+
+.userInfo {
+  position: absolute;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  left: 12.2rem;
+  top: calc(50% + 10rem);
+}
+
+.username {
+  font-size: 4.2rem;
+  line-height: 5.5rem;
+  font-weight: 900;
+  margin-bottom: 1.9rem;
+}
+
+.nameWrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.name {
+  font-size: 4.2rem;
+  line-height: 5.5rem;
+  font-weight: 300;
+  background: none;
+  border: none;
+  width: 44rem;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.pen {
+  cursor: pointer;
+  width: 4.4rem;
+  height: 5.1rem;
+  background: url('data:image/svg+xml,<svg width="45" height="52" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M29.35 2.18977L44.7551 10.487L23.1192 39.8947L8.86515 29.4077L29.35 2.18977Z" fill="white"/><path d="M6.33962 46.1224L7.61914 31.1025L21.8732 41.5895L6.33962 46.1224Z" fill="white"/></svg>')
+    center/100% no-repeat;
+}

@@ -1,0 +1,32 @@
+name: Deploy on Pull Request
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy on Server
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add server to known_hosts
+      run: |
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to Server
+      run: |
+        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.SERVER_IP }} << EOF
+        cd /root/santa_project
+        git pull origin main
+        docker compose up -d --build
+        EOF

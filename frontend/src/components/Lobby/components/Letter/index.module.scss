@@ -1,0 +1,72 @@
+.letterPopUp {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.letter {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: url('./images//background.svg') center/100% no-repeat;
+  width: 76.2rem;
+  height: 51.7rem;
+  left: 4.2rem;
+  top: calc(50% - 27rem);
+  color: #323030;
+}
+
+.letterIntro {
+  font-size: 2.6rem;
+  font-weight: 800;
+  width: 42rem;
+  margin-top: 16.5rem;
+  margin-left: 20.2rem;
+  margin-bottom: 3rem;
+}
+
+.letterPreferences {
+  font-size: 2.6rem;
+  font-weight: 400;
+  width: 45.3rem;
+  height: 17rem;
+  overflow: scroll;
+  margin-left: 24rem;
+  user-select: text;
+
+  a {
+    color: inherit;
+  }
+}
+
+.info {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  color: #913333;
+  left: 80rem;
+  top: calc(50% - 10rem);
+}
+
+.infoUsername {
+  font-size: 3.4rem;
+  font-weight: 800;
+  width: 408rem;
+}
+
+.infoName {
+  font-size: 3.4rem;
+  font-weight: 200;
+}
+
+.backBtn {
+  background: url('./images/backToLobby.svg') center/100% no-repeat;
+  width: 28.2rem;
+  height: 7rem;
+  margin-top: 5rem;
+  margin-left: -6rem;
+}

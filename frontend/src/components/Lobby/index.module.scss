@@ -1,0 +1,119 @@
+.lobby {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'JetBrains Mono', serif;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.backBtn {
+  position: absolute;
+  left: 2.8rem;
+  top: 2.5rem;
+  width: 14rem;
+  height: 10.3rem;
+}
+
+.header {
+  margin-top: 3.6rem;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  margin-bottom: 13rem;
+}
+
+.lobby__code {
+  position: relative;
+  color: #913333;
+  font-weight: 800;
+  font-size: 6.3rem;
+  cursor: pointer;
+
+  &::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 0.4rem;
+    background-color: #913333;
+    bottom: 1rem;
+    left: 0;
+  }
+}
+
+.lobby__name {
+  color: #913333;
+  font-weight: 400;
+  font-size: 4.8rem;
+}
+
+.lobby__admin {
+  font-size: 3rem;
+  color: 323030;
+}
+
+.content {
+  position: relative;
+  width: 121.3rem;
+  background-image: url('data:image/svg+xml,<svg width="1213" height="594" viewBox="0 0 1213 594" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1213 125H0V0L1213 28.5V125Z" fill="%23F7ECCB"/><path d="M1213 594H9.14319e-05L0 125H1213L1213 594Z" fill="%23F7ECCB"/></svg>');
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 3rem 4.7rem 5rem;
+  z-index: 2;
+}
+
+.letter {
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  top: 19rem;
+  left: 0.5rem;
+  background-image: url('data:image/svg+xml,<svg width="396" height="280" viewBox="0 0 396 280" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M35.9376 199.708L40.5708 20.0658L364.77 77.8464L344.133 278.402L35.9376 199.708Z" fill="%233C3391"/><path d="M44.7565 193.253L49.007 8.2575L372.137 73.1735L351.948 271.723L44.7565 193.253Z" fill="%233C3391" stroke="white" stroke-width="4"/><path d="M368.235 72.2558L211.188 141.217L51.232 8.32544L368.235 72.2558Z" fill="%233C3391" stroke="white" stroke-width="5" stroke-linejoin="round"/></svg>');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 35rem;
+  height: 20rem;
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in-out;
+}
+
+.letter__visible {
+  transform: translateY(0);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.button {
+  top: 19.9rem;
+  right: 2vw;
+}
+
+.elfs {
+  font-size: 5rem;
+  font-weight: 500;
+  margin-bottom: 4.6rem;
+}
+
+.participants {
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 5.9rem;
+  column-gap: 19rem;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
