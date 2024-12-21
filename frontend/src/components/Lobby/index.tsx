@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import styles from "./index.module.scss";
-import { observer } from "mobx-react-lite";
+import { observer, useLocalObservable } from "mobx-react-lite";
 import { useStore } from "src/store";
 import { Participant } from "./components/Participant";
 import { LobbyButton } from "./components/LobbyButton";
 import BackButton from "src/shared/components/BackButton";
 import Letter from "./components/Letter";
+import { LobbyStore } from "./store";
+import cn from "classnames";
 
 const Lobby = observer(() => {
   const {
-    lobbiesStore: { currentLobby, currentGift },
+    lobbiesStore,
+    lobbiesStore: { currentLobby, currentGift, startGame },
     user: { userInfo },
     goBack,
   } = useStore();
+
+  const store = useLocalObservable(() => new LobbyStore({ lobbiesStore }));
+
+  useEffect(() => {
+    store.init({ lobbyId: currentLobby.lobby_id });
+
+    return () => store.dispose();
+  }, []);
 
   if (!currentLobby || !userInfo) return;
 
@@ -20,7 +31,11 @@ const Lobby = observer(() => {
   const isAdmin = admin_username === userInfo.username;
   const creatorUsername = isAdmin ? "вы" : `@${admin_username}`;
 
-  const [isLetterVisible, setIsLetterVisible] = useState(false);
+  const handleStartGame = () => {
+    startGame({ isAdmin });
+  };
+
+  const isLetterPreviewVisible = currentLobby.is_started && currentGift;
 
   return (
     <div className={styles.lobby}>
@@ -32,13 +47,24 @@ const Lobby = observer(() => {
           создатель: {creatorUsername}
         </span>
       </div>
-      {currentLobby.is_started && currentGift && <div className={styles.letter} onClick={() => setIsLetterVisible(true)} />}
-      {isLetterVisible && <Letter setIsLetterVisible={setIsLetterVisible} />}
+
+      <div
+        className={cn(
+          styles.letter,
+          isLetterPreviewVisible && styles.letter__visible
+        )}
+        onClick={() => store.setIsLetterVisible(true)}
+      />
+
+      {store.isLetterVisible && (
+        <Letter setIsLetterVisible={store.setIsLetterVisible} />
+      )}
       <LobbyButton
         className={styles.button}
         isAdmin={isAdmin}
         adminUserName={admin_username}
         isStarted={is_started}
+        onClick={handleStartGame}
       />
       <div className={styles.content}>
         <span className={styles.elfs}>Эльфы</span>

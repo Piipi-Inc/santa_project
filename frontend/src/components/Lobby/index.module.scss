@@ -66,6 +66,7 @@
 }
 
 .letter {
+  cursor: pointer;
   position: absolute;
   z-index: 1;
   top: 19rem;
@@ -75,6 +76,13 @@
   background-repeat: no-repeat;
   width: 35rem;
   height: 20rem;
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in-out;
+}
+
+.letter__visible {
+  transform: translateY(0);
+  animation: pulse 1s ease-in-out infinite;
 }
 
 .button {
@@ -94,4 +102,18 @@
   grid-template-columns: 1fr 1fr;
   row-gap: 5.9rem;
   column-gap: 19rem;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }

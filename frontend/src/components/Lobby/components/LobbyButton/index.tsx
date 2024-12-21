@@ -15,18 +15,20 @@ export const LobbyButton = ({
   isAdmin,
   adminUserName,
   isStarted,
+  onClick,
 }: {
   className?: string;
   isAdmin: boolean;
   adminUserName: string;
   isStarted: boolean;
+  onClick: () => void;
 }) => {
   const rootStyles = cn(styles.lobbyButton, className, {
     [styles.lobbyButton__isNonAdmin]: !isAdmin,
   });
 
   return (
-    <div className={rootStyles}>
+    <div className={rootStyles} onClick={onClick}>
       <Background className={styles.background} />
       <span
         className={styles.text}

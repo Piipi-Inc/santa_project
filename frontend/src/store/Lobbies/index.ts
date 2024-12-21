@@ -14,10 +14,25 @@ export class LobbiesStore {
   constructor({ screenStore }: { screenStore: ScreenStore }) {
     this._screenStore = screenStore;
 
-    makeObservable<this, "_userLobbies">(this, {
+    makeObservable<
+      this,
+      | "_userLobbies"
+      | "_currentLobbyInfo"
+      | "setCurrentLobbyInfo"
+      | "_currentLobbyGift"
+      | "setCurrentLobbyGift"
+    >(this, {
       _userLobbies: observable,
       setUserLobbies: action,
       userLobbies: computed,
+
+      _currentLobbyInfo: observable,
+      setCurrentLobbyInfo: action,
+      currentLobby: computed,
+
+      _currentLobbyGift: observable,
+      setCurrentLobbyGift: action,
+      currentGift: computed,
     });
   }
 
@@ -33,10 +48,8 @@ export class LobbiesStore {
   public createLobby = async ({ lobby_name }: { lobby_name: string }) => {
     try {
       await this._screenStore.setScreen(Screens.LOADER);
-      const [response] = await Promise.all([
-        api.createLobby({ lobby_name }),
-        wait(2000),
-      ]);
+      const [response] = await Promise.all([api.createLobby({ lobby_name })]);
+      await Promise.all([this.refresh(), wait(2000)]);
       await this.goToLobby({ lobbyId: response.lobby_code });
     } catch (err) {
       console.warn(err);
@@ -45,13 +58,22 @@ export class LobbiesStore {
 
   public goToLobby = async ({ lobbyId }: { lobbyId: string }) => {
     const lobby = await api.getLobby({ lobby_id: lobbyId });
-    this._currentLobbyInfo = lobby;
+    this.setCurrentLobbyInfo(lobby);
     this._screenStore.setScreen(Screens.LOBBY);
 
     if (this._currentLobbyInfo.is_started) {
-      const gift = await api.getGift({lobby_id: lobbyId});
-      this._currentLobbyGift = gift;
+      const gift = await api.getGift({ lobby_id: lobbyId });
+      this.setCurrentLobbyGift(gift);
     }
+  };
+
+  public refreshLobby = async () => {
+    if (!this.currentLobby) return;
+
+    const lobby = await api.getLobby({ lobby_id: this.currentLobby.lobby_id });
+    const gift = await api.getGift({ lobby_id: this.currentLobby.lobby_id });
+    this.setCurrentLobbyGift(gift);
+    this.setCurrentLobbyInfo(lobby);
   };
 
   public refresh = async () => {
@@ -61,6 +83,14 @@ export class LobbiesStore {
 
   public setUserLobbies = (userLobbies: LobbiesStore["_userLobbies"]) => {
     this._userLobbies = userLobbies;
+  };
+
+  public startGame = async ({ isAdmin }: { isAdmin: boolean }) => {
+    console.log("start game");
+    if (!this.currentLobby || (!isAdmin && this.currentLobby.is_started))
+      return;
+
+    await api.startGame({ lobby_id: this.currentLobby.lobby_id });
   };
 
   public get userLobbies() {
@@ -74,4 +104,12 @@ export class LobbiesStore {
   public get currentGift() {
     return this._currentLobbyGift;
   }
+
+  private setCurrentLobbyInfo = (lobbyInfo: LobbyInfo) => {
+    this._currentLobbyInfo = lobbyInfo;
+  };
+
+  private setCurrentLobbyGift = (gift: LobbyGift) => {
+    this._currentLobbyGift = gift;
+  };
 }
