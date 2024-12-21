@@ -35,13 +35,19 @@ const Lobby = observer(() => {
     startGame({ isAdmin });
   };
 
+  const copyToClipBoard = () => {
+    navigator.clipboard.writeText(lobby_id);
+  };
+
   const isLetterPreviewVisible = currentLobby.is_started && currentGift;
 
   return (
     <div className={styles.lobby}>
       <BackButton className={styles.backBtn} onClick={goBack} />
       <div className={styles.header}>
-        <span className={styles.lobby__code}>{lobby_id}</span>
+        <span className={styles.lobby__code} onClick={copyToClipBoard}>
+          {lobby_id}
+        </span>
         <span className={styles.lobby__name}>{lobby_name}</span>
         <span className={styles.lobby__admin}>создатель: {creatorUsername}</span>
       </div>

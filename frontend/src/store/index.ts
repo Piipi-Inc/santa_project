@@ -66,7 +66,10 @@ export class RootStore {
     }
 
     if (this.screenStore.currentScreen === Screens.LOBBY) {
+      await this.screenStore.setScreen(Screens.LOADER);
+      await Promise.all([wait(1000), this.lobbiesStore.refresh()]);
       await this.screenStore.setScreen(Screens.MAIN);
+
       return;
     }
 

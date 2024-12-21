@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'store';
 import styles from './index.module.scss';
@@ -13,6 +13,8 @@ const Main = observer(() => {
     screenStore: { setScreen }
   } = useStore();
 
+  const [lobbyCode, setLobbyCode] = useState('');
+
   const lobbyCodeRef = useRef('');
   const lobbyNameRef = useRef('');
 
@@ -23,7 +25,7 @@ const Main = observer(() => {
   };
 
   const handleCodeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    lobbyCodeRef.current = e.target.value;
+    setLobbyCode(e.target.value.toUpperCase());
   };
 
   const handleLobbyNameInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +59,7 @@ const Main = observer(() => {
             placeholder="код"
             maxLength={6}
             className={styles.input}
+            value={lobbyCode}
             onChange={handleCodeInputChange}
             id="password"
           />
