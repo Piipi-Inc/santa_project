@@ -36,7 +36,7 @@ from src.schemas.lobbies import (
 router = APIRouter()
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 async def create_lobby(
     lobby_data: SCreateLobbyRequest,
     current_user: User = Depends(auth_manager.get_current_user),
