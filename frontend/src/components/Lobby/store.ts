@@ -25,13 +25,11 @@ export class LobbyStore {
     this.webSocket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      const socketEvent = data.event;
+      const socketEvent = data?.event;
 
-      if (socketEvent === 'start') {
-        this.handleStartGame();
+      if (socketEvent) {
+        this.handleSocketResponse();
       }
-
-      this.handleJoinEvent();
     };
 
     this.webSocket.onclose = () => {
@@ -47,11 +45,7 @@ export class LobbyStore {
     this.isLetterVisible = value;
   };
 
-  private handleStartGame = async () => {
-    await this.lobbiesStore.refreshLobby();
-  };
-
-  private handleJoinEvent = async () => {
+  private handleSocketResponse = async () => {
     await this.lobbiesStore.refreshLobby();
   };
 }

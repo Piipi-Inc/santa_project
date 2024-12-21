@@ -16,7 +16,7 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     ports:
-      - '5050:80'
+      - '5050:5050'
     env_file:
       - .env
     depends_on:
@@ -36,9 +36,20 @@ services:
     networks:
       - pg-net
 
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+    networks:
+      - pg-net
+
 volumes:
   postgres-data:
   pgadmin-data:
 
 networks:
   pg-net:
+    driver: bridge

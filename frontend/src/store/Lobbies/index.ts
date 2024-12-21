@@ -88,6 +88,14 @@ export class LobbiesStore {
     await api.startGame({ lobby_id: this.currentLobby.lobby_id });
   };
 
+  public restartGame = async ({ isAdmin }: { isAdmin: boolean }) => {
+    console.log("start game");
+    if (!this.currentLobby || (!isAdmin && this.currentLobby.is_started))
+      return;
+
+    await api.restartGame({ lobby_id: this.currentLobby.lobby_id });
+  };
+
   public get userLobbies() {
     return this._userLobbies;
   }

@@ -280,6 +280,49 @@ async def start_lobby(
     await manager.broadcast(lobby_id, message)
 
 
+@router.post("/{lobby_id}/restart")
+async def restart_lobby(
+    lobby_id: str,
+    current_user: Participant = Depends(auth_manager.get_current_user),
+    session: AsyncSession = Depends(get_async_session),
+) -> None:
+    participant = await session.execute(
+        select(Participant)
+        .where(Participant.lobby_id == lobby_id)
+        .where(Participant.user_id == current_user.id)
+    )
+    participant = participant.scalar()
+
+    if not participant or not participant.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only admin can start the lobby",
+        )
+
+    stmt = select(Participant.user_id).where(Participant.lobby_id == lobby_id)
+    res = await session.execute(stmt)
+    participant_list = [i[0] for i in set(res.all())]
+    random.shuffle(participant_list)
+
+    stmt = update(Lobby).where(Lobby.id == lobby_id).values(is_started=False)
+    await session.execute(stmt)
+
+    for i, prt_id in enumerate(participant_list):
+        stmt = (
+            update(Participant)
+            .where(Lobby.id == Participant.lobby_id)
+            .where(Lobby.id == lobby_id)
+            .where(Participant.user_id == prt_id)
+            .values(santa_to=None)
+        )
+        await session.execute(stmt)
+
+    await session.commit()
+
+    message = {"event": "restart"}
+    await manager.broadcast(lobby_id, message)
+
+
 @router.get("/{lobby_id}/gift")
 async def get_gift(
     lobby_id: str,

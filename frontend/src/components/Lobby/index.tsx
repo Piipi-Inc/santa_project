@@ -12,7 +12,7 @@ import cn from 'classnames';
 const Lobby = observer(() => {
   const {
     lobbiesStore,
-    lobbiesStore: { currentLobby, currentGift, startGame },
+    lobbiesStore: { currentLobby, currentGift, startGame, restartGame },
     user: { userInfo },
     goBack
   } = useStore();
@@ -32,7 +32,15 @@ const Lobby = observer(() => {
   const creatorUsername = isAdmin ? 'вы' : `@${admin_username}`;
 
   const handleStartGame = () => {
-    startGame({ isAdmin });
+    if (isAdmin && !currentLobby.is_started) {
+      startGame({ isAdmin });
+      return;
+    }
+
+    if (isAdmin && currentLobby.is_started) {
+      restartGame({ isAdmin });
+    }
+
   };
 
   const copyToClipBoard = () => {

@@ -117,6 +117,14 @@ export class ApiService {
     return this.axiosInstance.post(`${this.apiUrl}/lobby/${lobby_id}/start`);
   };
 
+  public restartGame = async ({ lobby_id }: { lobby_id: string }) => {
+    if (this.isMockBackendEnabled) {
+      return Promise.resolve();
+    }
+
+    return this.axiosInstance.post(`${this.apiUrl}/lobby/${lobby_id}/restart`);
+  };
+
   public getGift = async ({ lobby_id }: { lobby_id: string }): Promise<T.LobbyGift> => {
     if (this.isMockBackendEnabled) {
       return Promise.resolve(mocks.getGiftResponse);
