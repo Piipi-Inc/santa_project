@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import styles from './index.module.scss';
-import Santa from 'shared/images/santa.svg?react';
 import { Title } from 'shared/components/Title';
 import { useStore } from 'store';
 import { Elf } from 'shared/components/Elf';
@@ -30,7 +29,7 @@ const StoryTelling = observer(() => {
       <Title className={styles.title} />
 
       <div className={cn(styles.santaWrap, styles[`santaWrap_${store.step}`])}>
-        <Santa />
+        <div className={styles.santa} />
         <div className={styles.bubble}>
           <span className={styles.text}>пойду-ка я хорошенько нажрусь</span>
         </div>

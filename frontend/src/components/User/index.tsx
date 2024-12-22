@@ -8,7 +8,8 @@ import { Elf } from 'shared/components/Elf';
 const UserPage = observer(() => {
   const {
     goBack,
-    user: { userInfo, saveUserName, saveUserPreferences }
+    init,
+    user: { userInfo, saveUserName, saveUserPreferences, logout }
   } = useStore();
 
   const [preferencesValue, setPreferencesValue] = useState(userInfo?.preferences || '');
@@ -20,6 +21,11 @@ const UserPage = observer(() => {
 
   const handleNameChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameValue(e.target.value);
+  };
+
+  const handleExitBtnClick = async () => {
+    await logout();
+    await init();
   };
 
   const saveNewName = async () => {
@@ -68,6 +74,9 @@ const UserPage = observer(() => {
           <span className={styles.nameWrap}>
             <input onChange={handleNameChangeInput} className={styles.name} value={nameValue} />
             {userInfo?.name !== nameValue && <span onClick={saveNewName} className={styles.pen} />}
+          </span>
+          <span className={styles.exitBtn} onClick={handleExitBtnClick}>
+            выйти
           </span>
         </div>
       </div>

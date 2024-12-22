@@ -44,6 +44,10 @@ export class User {
     await this.init();
   };
 
+  public logout = async () => {
+    await api.logout();
+  };
+
   public saveStoryTellingCompleted = async () => {
     if (this.hasSeenStoryTelling || !this.userInfo) return;
 
