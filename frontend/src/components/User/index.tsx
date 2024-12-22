@@ -19,9 +19,9 @@ const UserPage = observer(() => {
   const letterValue = useRef(userInfo?.preferences || '');
 
   const handleChangeInput = (e: any) => {
-    if (letterValue.current !== userInfo.preferences && !changePreferencesVisible) setChangePreferencesVisible(true);
+    if (letterValue.current !== userInfo?.preferences && !changePreferencesVisible) setChangePreferencesVisible(true);
     letterValue.current = e.target.innerHTML;
-    letterRef.current.innerHTML = replaceWithLink(letterValue.current);
+    if (letterRef.current) letterRef.current.innerHTML = replaceWithLink(letterValue.current);
     setEndOfContenteditable(letterRef.current);
   };
 
@@ -65,8 +65,6 @@ const UserPage = observer(() => {
           className={styles.textarea}
           suppressContentEditableWarning={true}
           onInput={handleChangeInput}
-          placeholder="хочу..."
-          maxLength={140}
         />
       </div>
 

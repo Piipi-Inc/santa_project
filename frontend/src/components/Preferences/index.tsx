@@ -33,7 +33,7 @@ const Preferences = observer(() => {
 
   const handleChangeInput = (e: any) => {
     letterValue.current = e.target.innerHTML;
-    letterRef.current.innerHTML = replaceWithLink(letterValue.current);
+    if (letterRef.current) letterRef.current.innerHTML = replaceWithLink(letterValue.current);
     setEndOfContenteditable(letterRef.current);
   };
 
@@ -59,8 +59,6 @@ const Preferences = observer(() => {
             onInput={handleChangeInput}
             suppressContentEditableWarning={true}
             className={styles.textarea}
-            placeholder="хочу..."
-            maxLength={140}
           />
         </div>
         <div className={cn(styles.address, store.isRunningAnimation && styles.address_visible)}>
