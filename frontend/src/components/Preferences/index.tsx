@@ -10,6 +10,7 @@ import mark1 from './images/mark_1.png';
 import mark2 from './images/mark_2.png';
 import mark3 from './images/mark_3.png';
 import mark4 from './images/mark_4.png';
+import { replaceWithLink, setEndOfContenteditable, extractUrlsAndText } from 'shared/utils/replaceWithLink';
 
 const Preferences = observer(() => {
   const {
@@ -27,16 +28,17 @@ const Preferences = observer(() => {
       })
   );
 
-  const preferencesRef = useRef('');
+  const letterRef = useRef<HTMLDivElement | null>(null);
+  const letterValue = useRef(userInfo?.preferences || '');
 
-  const handlePreferencesInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    preferencesRef.current = e.target.value;
+  const handleChangeInput = (e: any) => {
+    letterValue.current = e.target.innerHTML;
+    letterRef.current.innerHTML = replaceWithLink(letterValue.current);
+    setEndOfContenteditable(letterRef.current);
   };
 
   const handleButtonClick = () => {
-    if (preferencesRef.current === '') return;
-
-    store.handleButtonClick({ preferences: preferencesRef.current });
+    store.handleButtonClick({ preferences: extractUrlsAndText(letterValue.current) });
   };
 
   return (
@@ -50,8 +52,12 @@ const Preferences = observer(() => {
             <br />
             мучения я хочу получить:
           </span>
-          <textarea
-            onChange={handlePreferencesInput}
+          <div
+            contentEditable
+            ref={letterRef}
+            dangerouslySetInnerHTML={{ __html: replaceWithLink(letterValue.current) }}
+            onInput={handleChangeInput}
+            suppressContentEditableWarning={true}
             className={styles.textarea}
             placeholder="хочу..."
             maxLength={140}
