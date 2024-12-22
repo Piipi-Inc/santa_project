@@ -2,24 +2,36 @@ import BackButton from 'shared/components/BackButton';
 import styles from './index.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useStore } from 'store';
-import { useState } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { Elf } from 'shared/components/Elf';
+import { replaceWithLink, setEndOfContenteditable, extractUrlsAndText } from 'shared/utils/replaceWithLink';
 
 const UserPage = observer(() => {
   const {
     goBack,
-    user: { userInfo, saveUserName, saveUserPreferences }
+    init,
+    user: { userInfo, saveUserName, saveUserPreferences, logout }
   } = useStore();
 
-  const [preferencesValue, setPreferencesValue] = useState(userInfo?.preferences || '');
+  const [changePreferencesVisible, setChangePreferencesVisible] = useState(false);
   const [nameValue, setNameValue] = useState(userInfo?.name || '');
+  const letterRef = useRef<HTMLDivElement | null>(null);
+  const letterValue = useRef(userInfo?.preferences || '');
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPreferencesValue(e.target.value);
+  const handleChangeInput = (e: any) => {
+    if (letterValue.current !== userInfo.preferences && !changePreferencesVisible) setChangePreferencesVisible(true);
+    letterValue.current = e.target.innerHTML;
+    letterRef.current.innerHTML = replaceWithLink(letterValue.current);
+    setEndOfContenteditable(letterRef.current);
   };
 
   const handleNameChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameValue(e.target.value);
+  };
+
+  const handleExitBtnClick = async () => {
+    await logout();
+    await init();
   };
 
   const saveNewName = async () => {
@@ -28,8 +40,9 @@ const UserPage = observer(() => {
   };
 
   const saveNewPreferences = async () => {
-    if (userInfo?.preferences === preferencesValue || !preferencesValue) return;
-    await saveUserPreferences({ preferences: preferencesValue });
+    if (userInfo?.preferences === letterValue.current || !letterValue) return;
+    setChangePreferencesVisible(false);
+    await saveUserPreferences({ preferences: extractUrlsAndText(letterValue.current) });
   };
 
   if (!userInfo) return null;
@@ -45,16 +58,19 @@ const UserPage = observer(() => {
           <br />
           мучения я хочу получить:
         </span>
-        <textarea
+        <div
+          contentEditable
+          ref={letterRef}
+          dangerouslySetInnerHTML={{ __html: replaceWithLink(letterValue.current) }}
           className={styles.textarea}
-          onChange={handleChangeInput}
-          value={preferencesValue ?? ''}
+          suppressContentEditableWarning={true}
+          onInput={handleChangeInput}
           placeholder="хочу..."
           maxLength={140}
         />
       </div>
 
-      {preferencesValue !== userInfo.preferences && (
+      {changePreferencesVisible && (
         <button className={styles.button} onClick={saveNewPreferences}>
           изменить
         </button>
@@ -68,6 +84,9 @@ const UserPage = observer(() => {
           <span className={styles.nameWrap}>
             <input onChange={handleNameChangeInput} className={styles.name} value={nameValue} />
             {userInfo?.name !== nameValue && <span onClick={saveNewName} className={styles.pen} />}
+          </span>
+          <span className={styles.exitBtn} onClick={handleExitBtnClick}>
+            выйти
           </span>
         </div>
       </div>

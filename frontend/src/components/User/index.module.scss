@@ -134,3 +134,15 @@
   background: url('data:image/svg+xml,<svg width="45" height="52" viewBox="0 0 45 52" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M29.35 2.18977L44.7551 10.487L23.1192 39.8947L8.86515 29.4077L29.35 2.18977Z" fill="white"/><path d="M6.33962 46.1224L7.61914 31.1025L21.8732 41.5895L6.33962 46.1224Z" fill="white"/></svg>')
     center/100% no-repeat;
 }
+
+.exitBtn {
+  cursor: pointer;
+  width: 28rem;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(40%);
+  color: #913333;
+  font-size: 3rem;
+}
